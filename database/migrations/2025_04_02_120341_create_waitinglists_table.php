@@ -11,14 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('address', function (Blueprint $table) {
-            $table->id( 'address_id');
-            $table->string('name');
-            $table->string('street');
-            $table->string('postal_code');
-            $table->string('city');
-            $table->string('country');
-            $table->text('address_description')->nullable();
+        Schema::create('waitinglists', function (Blueprint $table) {
+            $table->id();
             $table->timestamps();
         });
     }
@@ -28,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('addresses');
+        Schema::dropIfExists('waitinglists');
     }
 };
