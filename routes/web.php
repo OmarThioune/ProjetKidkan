@@ -1,6 +1,6 @@
 <?php
 
-use Inertia\Inertia;
+use Inertia\Inertia;// We are going to use this class to render React components
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\AddressController;
@@ -10,6 +10,10 @@ use App\Http\Controllers\InstanceActivityController;
 use App\Http\Controllers\KidController;
 use App\Http\Controllers\PricingController;
 use App\Http\Controllers\ProviderController;
+
+Route::get('/', function () {
+    return Inertia::render('Test'); // This will get component Test.jsx from the resources/js/Pages/Test.jsx
+});
 
 Route::resource('providers', ProviderController::class);
 
