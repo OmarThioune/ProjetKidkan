@@ -4,82 +4,103 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Pricing;
+use App\Models\Instance_Activity;
+use Inertia\Inertia;
 
 class PricingController extends Controller
 {
     /**
-     * Récupérer toutes les entrées de tarification.
+     * Afficher toutes les tarifications.
      */
     public function index()
     {
-        return response()->json(Pricing::all(), 200);
+        $pricings = Pricing::with('instanceActivity')->get();
+
+        return Inertia::render('Pricings/Index', [
+            'pricings' => $pricings
+        ]);
     }
 
     /**
-     * Enregistrer une nouvelle entrée de tarification.
+     * Afficher le formulaire de création.
+     */
+    public function create()
+    {
+        $instanceActivities = Instance_Activity::all();
+
+        return Inertia::render('Pricings/Create', [
+            'instanceActivities' => $instanceActivities
+        ]);
+    }
+
+    /**
+     * Enregistrer une nouvelle tarification.
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'price' => 'required|numeric',
-            'currency' => 'required|string',
-            'instance_activity_id' => 'required|exists:instance__activities,instance__activities_id', // Vérifier l'existence de l'instance d'activité
-        ]);
-
-        $pricing = Pricing::create($request->all());
-
-        return response()->json($pricing, 201);
-    }
-
-    /**
-     * Récupérer une entrée de tarification spécifique.
-     */
-    public function show($id)
-    {
-        $pricing = Pricing::find($id);
-
-        if (!$pricing) {
-            return response()->json(['message' => 'Tarification non trouvée'], 404);
-        }
-
-        return response()->json($pricing, 200);
-    }
-
-    /**
-     * Mettre à jour une entrée de tarification.
-     */
-    public function update(Request $request, $id)
-    {
-        $pricing = Pricing::find($id);
-
-        if (!$pricing) {
-            return response()->json(['message' => 'Tarification non trouvée'], 404);
-        }
-
-        $request->validate([
+        $validated = $request->validate([
             'price' => 'required|numeric',
             'currency' => 'required|string',
             'instance_activity_id' => 'required|exists:instance__activities,instance__activities_id',
         ]);
 
-        $pricing->update($request->all());
+        Pricing::create($validated);
 
-        return response()->json($pricing, 200);
+        return redirect()->route('pricings.index')->with('success', 'Tarification ajoutée avec succès.');
     }
 
     /**
-     * Supprimer une entrée de tarification.
+     * Afficher une tarification spécifique.
+     */
+    public function show($id)
+    {
+        $pricing = Pricing::with('instanceActivity')->findOrFail($id);
+
+        return Inertia::render('Pricings/Show', [
+            'pricing' => $pricing
+        ]);
+    }
+
+    /**
+     * Afficher le formulaire d’édition.
+     */
+    public function edit($id)
+    {
+        $pricing = Pricing::findOrFail($id);
+        $instanceActivities = Instance_Activity::all();
+
+        return Inertia::render('Pricings/Edit', [
+            'pricing' => $pricing,
+            'instanceActivities' => $instanceActivities
+        ]);
+    }
+
+    /**
+     * Mettre à jour une tarification.
+     */
+    public function update(Request $request, $id)
+    {
+        $pricing = Pricing::findOrFail($id);
+
+        $validated = $request->validate([
+            'price' => 'required|numeric',
+            'currency' => 'required|string',
+            'instance_activity_id' => 'required|exists:instance__activities,instance__activities_id',
+        ]);
+
+        $pricing->update($validated);
+
+        return redirect()->route('pricings.index')->with('success', 'Tarification mise à jour avec succès.');
+    }
+
+    /**
+     * Supprimer une tarification.
      */
     public function destroy($id)
     {
-        $pricing = Pricing::find($id);
-
-        if (!$pricing) {
-            return response()->json(['message' => 'Tarification non trouvée'], 404);
-        }
-
+        $pricing = Pricing::findOrFail($id);
         $pricing->delete();
 
-        return response()->json(['message' => 'Tarification supprimée'], 200);
+        return redirect()->route('pricings.index')->with('success', 'Tarification supprimée avec succès.');
     }
 }

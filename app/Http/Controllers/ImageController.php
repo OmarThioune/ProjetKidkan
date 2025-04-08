@@ -5,15 +5,28 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Image;
 use Illuminate\Support\Facades\Storage;
+use Inertia\Inertia;
 
 class ImageController extends Controller
 {
     /**
-     * Récupérer toutes les images.
+     * Afficher toutes les images.
      */
     public function index()
     {
-        return response()->json(Image::all(), 200);
+        $images = Image::with('activity')->get();
+
+        return Inertia::render('Images/Index', [
+            'images' => $images,
+        ]);
+    }
+
+    /**
+     * Afficher le formulaire de création d'image.
+     */
+    public function create()
+    {
+        return Inertia::render('Images/Create');
     }
 
     /**
@@ -21,33 +34,33 @@ class ImageController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'activity_id' => 'required|exists:activities,activity_id',
         ]);
 
-        // Sauvegarde de l'image
+        // Sauvegarde du fichier dans le dossier public/storage/uploads
         $path = $request->file('image')->store('uploads', 'public');
 
-        // Création de l'entrée en base de données
-        $image = Image::create([
+        // Enregistrement dans la base de données
+        Image::create([
             'image' => $path,
-            'activity_id' => $request->activity_id,
+            'activity_id' => $validated['activity_id'],
         ]);
 
-        return response()->json($image, 201);
+        return redirect()->route('images.index')->with('success', 'Image ajoutée avec succès.');
     }
 
     /**
-     * Récupérer une image spécifique.
+     * Afficher une image spécifique.
      */
     public function show($id)
     {
-        $image = Image::find($id);
-        if (!$image) {
-            return response()->json(['message' => 'Image non trouvée'], 404);
-        }
-        return response()->json($image, 200);
+        $image = Image::findOrFail($id);
+
+        return Inertia::render('Images/Show', [
+            'image' => $image,
+        ]);
     }
 
     /**
@@ -55,15 +68,14 @@ class ImageController extends Controller
      */
     public function destroy($id)
     {
-        $image = Image::find($id);
-        if (!$image) {
-            return response()->json(['message' => 'Image non trouvée'], 404);
-        }
+        $image = Image::findOrFail($id);
 
-        // Supprimer l'image du stockage
+        // Supprimer le fichier du disque
         Storage::disk('public')->delete($image->image);
 
+        // Supprimer l'entrée de la base de données
         $image->delete();
-        return response()->json(['message' => 'Image supprimée'], 200);
+
+        return redirect()->route('images.index')->with('success', 'Image supprimée avec succès.');
     }
 }

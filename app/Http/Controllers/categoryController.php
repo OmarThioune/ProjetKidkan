@@ -4,15 +4,28 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Category;
+use Inertia\Inertia;
 
 class CategoryController extends Controller
 {
     /**
-     * Récupérer toutes les catégories.
+     * Afficher toutes les catégories.
      */
     public function index()
     {
-        return response()->json(Category::all(), 200);
+        $categories = Category::all();
+
+        return Inertia::render('Categories/Index', [
+            'categories' => $categories,
+        ]);
+    }
+
+    /**
+     * Afficher le formulaire de création.
+     */
+    public function create()
+    {
+        return Inertia::render('Categories/Create');
     }
 
     /**
@@ -20,27 +33,40 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
             'sub_categories_id' => 'nullable|integer',
             'activiteCategorie_id' => 'nullable|integer',
         ]);
 
-        $category = Category::create($request->all());
+        Category::create($validated);
 
-        return response()->json($category, 201);
+        return redirect()->route('categories.index')
+                         ->with('success', 'Catégorie créée avec succès.');
     }
 
     /**
-     * Récupérer une catégorie spécifique.
+     * Afficher une catégorie spécifique.
      */
     public function show($id)
     {
-        $category = Category::find($id);
-        if (!$category) {
-            return response()->json(['message' => 'Catégorie non trouvée'], 404);
-        }
-        return response()->json($category, 200);
+        $category = Category::findOrFail($id);
+
+        return Inertia::render('Categories/Show', [
+            'category' => $category,
+        ]);
+    }
+
+    /**
+     * Afficher le formulaire d’édition.
+     */
+    public function edit($id)
+    {
+        $category = Category::findOrFail($id);
+
+        return Inertia::render('Categories/Edit', [
+            'category' => $category,
+        ]);
     }
 
     /**
@@ -48,20 +74,18 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $category = Category::find($id);
-        if (!$category) {
-            return response()->json(['message' => 'Catégorie non trouvée'], 404);
-        }
+        $category = Category::findOrFail($id);
 
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
             'sub_categories_id' => 'nullable|integer',
             'activiteCategorie_id' => 'nullable|integer',
         ]);
 
-        $category->update($request->all());
+        $category->update($validated);
 
-        return response()->json($category, 200);
+        return redirect()->route('categories.index')
+                         ->with('success', 'Catégorie mise à jour avec succès.');
     }
 
     /**
@@ -69,12 +93,10 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        $category = Category::find($id);
-        if (!$category) {
-            return response()->json(['message' => 'Catégorie non trouvée'], 404);
-        }
-
+        $category = Category::findOrFail($id);
         $category->delete();
-        return response()->json(['message' => 'Catégorie supprimée'], 200);
+
+        return redirect()->route('categories.index')
+                         ->with('success', 'Catégorie supprimée avec succès.');
     }
 }

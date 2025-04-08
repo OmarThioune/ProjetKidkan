@@ -4,15 +4,28 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Activity;
+use Inertia\Inertia;
 
 class ActivityController extends Controller
 {
     /**
-     * Récupérer toutes les activités.
+     * Afficher la liste des activités (Vue Inertia).
      */
     public function index()
     {
-        return response()->json(Activity::all(), 200);
+        $activities = Activity::all();
+
+        return Inertia::render('Activities/Index', [
+            'activities' => $activities,
+        ]);
+    }
+
+    /**
+     * Afficher le formulaire de création.
+     */
+    public function create()
+    {
+        return Inertia::render('Activities/Create');
     }
 
     /**
@@ -20,7 +33,7 @@ class ActivityController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'material' => 'nullable|string',
@@ -34,21 +47,34 @@ class ActivityController extends Controller
             'status' => 'required|boolean',
         ]);
 
-        $activity = Activity::create($request->all());
+        Activity::create($validated);
 
-        return response()->json($activity, 201);
+        return redirect()->route('activities.index')
+                         ->with('success', 'Activité créée avec succès.');
     }
 
     /**
-     * Récupérer une activité spécifique.
+     * Afficher une activité spécifique.
      */
     public function show($id)
     {
-        $activity = Activity::find($id);
-        if (!$activity) {
-            return response()->json(['message' => 'Activité non trouvée'], 404);
-        }
-        return response()->json($activity, 200);
+        $activity = Activity::findOrFail($id);
+
+        return Inertia::render('Activities/Show', [
+            'activity' => $activity,
+        ]);
+    }
+
+    /**
+     * Afficher le formulaire d’édition d’une activité.
+     */
+    public function edit($id)
+    {
+        $activity = Activity::findOrFail($id);
+
+        return Inertia::render('Activities/Edit', [
+            'activity' => $activity,
+        ]);
     }
 
     /**
@@ -56,12 +82,9 @@ class ActivityController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $activity = Activity::find($id);
-        if (!$activity) {
-            return response()->json(['message' => 'Activité non trouvée'], 404);
-        }
+        $activity = Activity::findOrFail($id);
 
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'material' => 'nullable|string',
@@ -75,9 +98,10 @@ class ActivityController extends Controller
             'status' => 'required|boolean',
         ]);
 
-        $activity->update($request->all());
+        $activity->update($validated);
 
-        return response()->json($activity, 200);
+        return redirect()->route('activities.index')
+                         ->with('success', 'Activité mise à jour avec succès.');
     }
 
     /**
@@ -85,12 +109,10 @@ class ActivityController extends Controller
      */
     public function destroy($id)
     {
-        $activity = Activity::find($id);
-        if (!$activity) {
-            return response()->json(['message' => 'Activité non trouvée'], 404);
-        }
-
+        $activity = Activity::findOrFail($id);
         $activity->delete();
-        return response()->json(['message' => 'Activité supprimée'], 200);
+
+        return redirect()->route('activities.index')
+                         ->with('success', 'Activité supprimée avec succès.');
     }
 }

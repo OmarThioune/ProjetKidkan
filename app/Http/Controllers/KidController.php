@@ -4,45 +4,75 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Kid;
+use App\Models\User;
+use Inertia\Inertia;
 
 class KidController extends Controller
 {
     /**
-     * Récupérer tous les enfants.
+     * Afficher tous les enfants.
      */
     public function index()
     {
-        return response()->json(Kid::all(), 200);
+        $kids = Kid::with('user')->get();
+
+        return Inertia::render('Kids/Index', [
+            'kids' => $kids
+        ]);
     }
 
     /**
-     * Ajouter un nouvel enfant.
+     * Afficher le formulaire de création.
+     */
+    public function create()
+    {
+        $users = User::all();
+
+        return Inertia::render('Kids/Create', [
+            'users' => $users
+        ]);
+    }
+
+    /**
+     * Enregistrer un nouvel enfant.
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'required|string',
             'age' => 'required|integer',
-            'user_id' => 'required|exists:users,id', // Vérifie que l'utilisateur existe
+            'user_id' => 'required|exists:users,id',
         ]);
 
-        $kid = Kid::create($request->all());
+        Kid::create($validated);
 
-        return response()->json($kid, 201);
+        return redirect()->route('kids.index')->with('success', 'Enfant ajouté avec succès.');
     }
 
     /**
-     * Récupérer un enfant spécifique.
+     * Afficher un enfant spécifique.
      */
     public function show($id)
     {
-        $kid = Kid::find($id);
+        $kid = Kid::with('user')->findOrFail($id);
 
-        if (!$kid) {
-            return response()->json(['message' => 'Enfant non trouvé'], 404);
-        }
+        return Inertia::render('Kids/Show', [
+            'kid' => $kid
+        ]);
+    }
 
-        return response()->json($kid, 200);
+    /**
+     * Afficher le formulaire de modification.
+     */
+    public function edit($id)
+    {
+        $kid = Kid::findOrFail($id);
+        $users = User::all();
+
+        return Inertia::render('Kids/Edit', [
+            'kid' => $kid,
+            'users' => $users
+        ]);
     }
 
     /**
@@ -50,21 +80,17 @@ class KidController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $kid = Kid::find($id);
+        $kid = Kid::findOrFail($id);
 
-        if (!$kid) {
-            return response()->json(['message' => 'Enfant non trouvé'], 404);
-        }
-
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'required|string',
             'age' => 'required|integer',
             'user_id' => 'required|exists:users,id',
         ]);
 
-        $kid->update($request->all());
+        $kid->update($validated);
 
-        return response()->json($kid, 200);
+        return redirect()->route('kids.index')->with('success', 'Enfant mis à jour avec succès.');
     }
 
     /**
@@ -72,14 +98,9 @@ class KidController extends Controller
      */
     public function destroy($id)
     {
-        $kid = Kid::find($id);
-
-        if (!$kid) {
-            return response()->json(['message' => 'Enfant non trouvé'], 404);
-        }
-
+        $kid = Kid::findOrFail($id);
         $kid->delete();
 
-        return response()->json(['message' => 'Enfant supprimé'], 200);
+        return redirect()->route('kids.index')->with('success', 'Enfant supprimé avec succès.');
     }
 }

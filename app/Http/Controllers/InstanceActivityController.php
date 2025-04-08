@@ -4,15 +4,33 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Instance_Activity;
+use App\Models\Address;
+use Inertia\Inertia;
 
 class InstanceActivityController extends Controller
 {
     /**
-     * Récupérer toutes les instances d'activités.
+     * Afficher toutes les instances d'activités.
      */
     public function index()
     {
-        return response()->json(Instance_Activity::all(), 200);
+        $instances = Instance_Activity::with('address')->get();
+
+        return Inertia::render('InstanceActivities/Index', [
+            'instances' => $instances
+        ]);
+    }
+
+    /**
+     * Afficher le formulaire de création.
+     */
+    public function create()
+    {
+        $addresses = Address::all();
+
+        return Inertia::render('InstanceActivities/Create', [
+            'addresses' => $addresses
+        ]);
     }
 
     /**
@@ -20,53 +38,7 @@ class InstanceActivityController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'start' => 'required|date',
-            'end' => 'required|date',
-            'deadline' => 'required|date',
-            'places' => 'required|integer',
-            'subscription' => 'nullable|string',
-            'debutHour' => 'required|date_format:H:i',
-            'endHour' => 'required|date_format:H:i',
-            'status' => 'required|string',
-            'level' => 'required|string',
-            'minutes' => 'required|integer',
-            'debutSubscription' => 'required|date_format:H:i',
-            'location' => 'required|string',
-            'address_id' => 'required|exists:addresses,address_id', // Assurer que l'adresse existe
-        ]);
-
-        $instanceActivity = Instance_Activity::create($request->all());
-
-        return response()->json($instanceActivity, 201);
-    }
-
-    /**
-     * Récupérer une instance d'activité spécifique.
-     */
-    public function show($id)
-    {
-        $instanceActivity = Instance_Activity::find($id);
-
-        if (!$instanceActivity) {
-            return response()->json(['message' => 'Instance d\'activité non trouvée'], 404);
-        }
-
-        return response()->json($instanceActivity, 200);
-    }
-
-    /**
-     * Mettre à jour une instance d'activité.
-     */
-    public function update(Request $request, $id)
-    {
-        $instanceActivity = Instance_Activity::find($id);
-
-        if (!$instanceActivity) {
-            return response()->json(['message' => 'Instance d\'activité non trouvée'], 404);
-        }
-
-        $request->validate([
+        $validated = $request->validate([
             'start' => 'required|date',
             'end' => 'required|date',
             'deadline' => 'required|date',
@@ -82,24 +54,73 @@ class InstanceActivityController extends Controller
             'address_id' => 'required|exists:addresses,address_id',
         ]);
 
-        $instanceActivity->update($request->all());
+        Instance_Activity::create($validated);
 
-        return response()->json($instanceActivity, 200);
+        return redirect()->route('instance-activities.index')->with('success', 'Instance ajoutée avec succès.');
     }
 
     /**
-     * Supprimer une instance d'activité.
+     * Afficher une instance spécifique.
+     */
+    public function show($id)
+    {
+        $instance = Instance_Activity::with('address')->findOrFail($id);
+
+        return Inertia::render('InstanceActivities/Show', [
+            'instance' => $instance
+        ]);
+    }
+
+    /**
+     * Afficher le formulaire d'édition.
+     */
+    public function edit($id)
+    {
+        $instance = Instance_Activity::findOrFail($id);
+        $addresses = Address::all();
+
+        return Inertia::render('InstanceActivities/Edit', [
+            'instance' => $instance,
+            'addresses' => $addresses
+        ]);
+    }
+
+    /**
+     * Mettre à jour une instance d'activité.
+     */
+    public function update(Request $request, $id)
+    {
+        $instance = Instance_Activity::findOrFail($id);
+
+        $validated = $request->validate([
+            'start' => 'required|date',
+            'end' => 'required|date',
+            'deadline' => 'required|date',
+            'places' => 'required|integer',
+            'subscription' => 'nullable|string',
+            'debutHour' => 'required|date_format:H:i',
+            'endHour' => 'required|date_format:H:i',
+            'status' => 'required|string',
+            'level' => 'required|string',
+            'minutes' => 'required|integer',
+            'debutSubscription' => 'required|date_format:H:i',
+            'location' => 'required|string',
+            'address_id' => 'required|exists:addresses,address_id',
+        ]);
+
+        $instance->update($validated);
+
+        return redirect()->route('instance-activities.index')->with('success', 'Instance mise à jour avec succès.');
+    }
+
+    /**
+     * Supprimer une instance.
      */
     public function destroy($id)
     {
-        $instanceActivity = Instance_Activity::find($id);
+        $instance = Instance_Activity::findOrFail($id);
+        $instance->delete();
 
-        if (!$instanceActivity) {
-            return response()->json(['message' => 'Instance d\'activité non trouvée'], 404);
-        }
-
-        $instanceActivity->delete();
-
-        return response()->json(['message' => 'Instance d\'activité supprimée'], 200);
+        return redirect()->route('instance-activities.index')->with('success', 'Instance supprimée avec succès.');
     }
 }

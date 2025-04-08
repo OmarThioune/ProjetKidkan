@@ -4,15 +4,28 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Provider;
+use Inertia\Inertia;
 
 class ProviderController extends Controller
 {
     /**
-     * Récupérer tous les fournisseurs.
+     * Afficher tous les fournisseurs.
      */
     public function index()
     {
-        return response()->json(Provider::all(), 200);
+        $providers = Provider::all();
+
+        return Inertia::render('Providers/Index', [
+            'providers' => $providers
+        ]);
+    }
+
+    /**
+     * Afficher le formulaire de création.
+     */
+    public function create()
+    {
+        return Inertia::render('Providers/Create');
     }
 
     /**
@@ -20,7 +33,7 @@ class ProviderController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'star' => 'required|integer|min:0|max:5',
@@ -28,21 +41,33 @@ class ProviderController extends Controller
             'link' => 'nullable|url',
         ]);
 
-        $provider = Provider::create($request->all());
+        $provider = Provider::create($validated);
 
-        return response()->json($provider, 201);
+        return redirect()->route('providers.index')->with('success', 'Fournisseur ajouté avec succès.');
     }
 
     /**
-     * Récupérer un fournisseur spécifique.
+     * Afficher un fournisseur spécifique.
      */
     public function show($id)
     {
-        $provider = Provider::find($id);
-        if (!$provider) {
-            return response()->json(['message' => 'Fournisseur non trouvé'], 404);
-        }
-        return response()->json($provider, 200);
+        $provider = Provider::findOrFail($id);
+
+        return Inertia::render('Providers/Show', [
+            'provider' => $provider
+        ]);
+    }
+
+    /**
+     * Afficher le formulaire d’édition.
+     */
+    public function edit($id)
+    {
+        $provider = Provider::findOrFail($id);
+
+        return Inertia::render('Providers/Edit', [
+            'provider' => $provider
+        ]);
     }
 
     /**
@@ -50,12 +75,9 @@ class ProviderController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $provider = Provider::find($id);
-        if (!$provider) {
-            return response()->json(['message' => 'Fournisseur non trouvé'], 404);
-        }
+        $provider = Provider::findOrFail($id);
 
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'star' => 'required|integer|min:0|max:5',
@@ -63,9 +85,9 @@ class ProviderController extends Controller
             'link' => 'nullable|url',
         ]);
 
-        $provider->update($request->all());
+        $provider->update($validated);
 
-        return response()->json($provider, 200);
+        return redirect()->route('providers.index')->with('success', 'Fournisseur mis à jour avec succès.');
     }
 
     /**
@@ -73,12 +95,9 @@ class ProviderController extends Controller
      */
     public function destroy($id)
     {
-        $provider = Provider::find($id);
-        if (!$provider) {
-            return response()->json(['message' => 'Fournisseur non trouvé'], 404);
-        }
-
+        $provider = Provider::findOrFail($id);
         $provider->delete();
-        return response()->json(['message' => 'Fournisseur supprimé'], 200);
+
+        return redirect()->route('providers.index')->with('success', 'Fournisseur supprimé avec succès.');
     }
 }

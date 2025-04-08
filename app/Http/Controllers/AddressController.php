@@ -4,15 +4,28 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Address;
+use Inertia\Inertia;
 
 class AddressController extends Controller
 {
     /**
-     * Récupérer toutes les adresses.
+     * Afficher toutes les adresses.
      */
     public function index()
     {
-        return response()->json(Address::all(), 200);
+        $addresses = Address::all();
+
+        return Inertia::render('Addresses/Index', [
+            'addresses' => $addresses,
+        ]);
+    }
+
+    /**
+     * Afficher le formulaire de création.
+     */
+    public function create()
+    {
+        return Inertia::render('Addresses/Create');
     }
 
     /**
@@ -20,7 +33,7 @@ class AddressController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
             'street' => 'required|string|max:255',
             'postal_code' => 'required|string|max:20',
@@ -29,21 +42,34 @@ class AddressController extends Controller
             'address_description' => 'nullable|string',
         ]);
 
-        $address = Address::create($request->all());
+        Address::create($validated);
 
-        return response()->json($address, 201);
+        return redirect()->route('addresses.index')
+                         ->with('success', 'Adresse enregistrée avec succès.');
     }
 
     /**
-     * Récupérer une adresse spécifique.
+     * Afficher une adresse spécifique.
      */
     public function show($id)
     {
-        $address = Address::find($id);
-        if (!$address) {
-            return response()->json(['message' => 'Adresse non trouvée'], 404);
-        }
-        return response()->json($address, 200);
+        $address = Address::findOrFail($id);
+
+        return Inertia::render('Addresses/Show', [
+            'address' => $address,
+        ]);
+    }
+
+    /**
+     * Afficher le formulaire d’édition d’une adresse.
+     */
+    public function edit($id)
+    {
+        $address = Address::findOrFail($id);
+
+        return Inertia::render('Addresses/Edit', [
+            'address' => $address,
+        ]);
     }
 
     /**
@@ -51,12 +77,9 @@ class AddressController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $address = Address::find($id);
-        if (!$address) {
-            return response()->json(['message' => 'Adresse non trouvée'], 404);
-        }
+        $address = Address::findOrFail($id);
 
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
             'street' => 'required|string|max:255',
             'postal_code' => 'required|string|max:20',
@@ -65,9 +88,10 @@ class AddressController extends Controller
             'address_description' => 'nullable|string',
         ]);
 
-        $address->update($request->all());
+        $address->update($validated);
 
-        return response()->json($address, 200);
+        return redirect()->route('addresses.index')
+                         ->with('success', 'Adresse mise à jour avec succès.');
     }
 
     /**
@@ -75,12 +99,10 @@ class AddressController extends Controller
      */
     public function destroy($id)
     {
-        $address = Address::find($id);
-        if (!$address) {
-            return response()->json(['message' => 'Adresse non trouvée'], 404);
-        }
-
+        $address = Address::findOrFail($id);
         $address->delete();
-        return response()->json(['message' => 'Adresse supprimée'], 200);
+
+        return redirect()->route('addresses.index')
+                         ->with('success', 'Adresse supprimée avec succès.');
     }
 }
