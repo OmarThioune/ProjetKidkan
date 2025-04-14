@@ -11,8 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('waitinglists', function (Blueprint $table) {
+        Schema::create('subscription_kids', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('kid_id')->nullable();
+            $table->foreign('kid_id')->references('id')->on('kids')->onDelete('cascade');
+            $table->string('favorite')->nullable();
+            $table->enum('status', ['En cours', 'En attente', 'Cours terminé', 'Inscrit']);
             $table->timestamps();
         });
     }
@@ -22,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('waitinglists');
+        Schema::dropIfExists('subscription_kids');
     }
 };

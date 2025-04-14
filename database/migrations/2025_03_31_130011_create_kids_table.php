@@ -11,13 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('providers', function (Blueprint $table) {
-            $table->id( 'provider_id');
-            $table->string('name');
-            $table->text('description')->nullable();
-            $table->integer('star')->nullable();
-            $table->string('Headquarters')->nullable();
-            $table->string('link')->nullable();
+        Schema::create('kids', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->foreign('user_id')->references('id')->on('user')->onDelete('cascade');
+            $table->string('name')->nullable();
+            $table->Integer('age')->nullable();
+
+
             $table->timestamps();
         });
     }
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('providers');
+        Schema::dropIfExists('kids');
     }
 };

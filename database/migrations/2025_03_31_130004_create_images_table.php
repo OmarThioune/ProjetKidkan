@@ -12,9 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('images', function (Blueprint $table) {
-            $table->id( 'image_id');
-            $table->foreignId('activity_id')->constrained('activities', 'activity_id')->onDelete('cascade');
-            $table->string('image')->nullable();
+            $table->id();
+            $table->unsignedBigInteger('activity_id')->nullable();            
+            $table->foreign('activity_id')->references('id')->on('activities')->onDelete('set null');
+            $table->string('src');
+            $table->string('title')->nullable();
+            $table->string('alt')->nullable();
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }

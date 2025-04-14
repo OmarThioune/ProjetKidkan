@@ -12,11 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('sub_categories', function (Blueprint $table) {
-            $table->id('sub_categories_id'); // Primary key
+            $table->id(); // Primary key
             $table->string('name'); // Name of the sub-category
             $table->string('description')->nullable(); // Description of the sub-category
-            $table->unsignedBigInteger('sousCategorie_id')->nullable(); // Foreign key to categories table
-            $table->unsignedBigInteger('activiteCategorie_id')->nullable(); // Foreign key to activities table
             $table->timestamps();
         });
     }

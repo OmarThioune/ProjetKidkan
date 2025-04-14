@@ -9,7 +9,7 @@ class Image extends Model
     protected $table = 'images';
     protected $primaryKey = 'image_id';
 
-    protected $fillable = ['image', 'activity_id'];
+    protected $fillable = ['title','src','description','alt', 'activity_id'];
 
     public function activity()
     {

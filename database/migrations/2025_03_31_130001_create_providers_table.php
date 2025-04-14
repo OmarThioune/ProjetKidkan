@@ -11,14 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pricings', function (Blueprint $table) {
-            $table->id( 'pricing_id');
-            $table->string('price')->nullable();
-            $table->string('currency')->nullable();
-            $table->foreignId('instance_activity_id')->constrained('instance__activities', 'instance_activity_id')->onDelete('cascade');
-
-
-
+        Schema::create('providers', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->text('description')->nullable();
+            $table->integer('star')->nullable();
+            $table->string('Headquarters')->nullable();
+            $table->string('link')->nullable();
             $table->timestamps();
         });
     }
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pricings');
+        Schema::dropIfExists('providers');
     }
 };

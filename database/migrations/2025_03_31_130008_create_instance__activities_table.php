@@ -12,12 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('instance__activities', function (Blueprint $table) {
-            $table->id( 'instance_activity_id');
+            $table->id();
             $table->dateTime('start');
             $table->dateTime('end');
             $table->dateTime('deadline')->nullable();
             $table->integer('places');
-            $table->boolean('subscription')->default(false);
+            $table->integer('nb_inscription');
             $table->time('debutHour');
             $table->time('endHour');
             $table->string('status');
@@ -26,9 +26,9 @@ return new class extends Migration
             $table->dateTime('debutSubscription')->nullable();
             $table->string('location');
             $table->unsignedBigInteger('address_id');
-            $table->timestamps();
-
+            $table->unsignedBigInteger('sub_activity_id');
             $table->foreign('address_id')->references('id')->on('addresses')->onDelete('cascade');
+            $table->foreign('sub_activity_id')->references('id')->on('sub_activity')->onDelete('cascade');
 
             $table->timestamps();
         });
