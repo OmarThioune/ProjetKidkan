@@ -14,12 +14,12 @@ return new class extends Migration
         Schema::create('sub_activity', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->integer('minAge')->nullable(); 
-            $table->integer('maxAge')->nullable();
-            $table->string('description')->nullable();
+            $table->integer('min_Age')->nullable(); 
+            $table->integer('max_Age')->nullable();
+            $table->text('description')->nullable();
             $table->string('range')->nullable();
             $table->unsignedBigInteger('activity_id')->nullable();
-            $table->foreign('activity_id')->references('id')->on('activities')->onDelete('cascade');
+            $table->foreign('activity_id')->references('id')->on('activity')->onDelete('set null');
             $table->timestamps();
         });
     }

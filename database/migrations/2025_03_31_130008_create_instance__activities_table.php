@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('instance__activities', function (Blueprint $table) {
+        Schema::create('instance_activity', function (Blueprint $table) {
             $table->id();
             $table->dateTime('start');
             $table->dateTime('end');
@@ -22,12 +22,12 @@ return new class extends Migration
             $table->time('endHour');
             $table->string('status');
             $table->string('level');
-            $table->integer('minutes');
+            $table->integer('minutes'); //Time of the course in minutes
             $table->dateTime('debutSubscription')->nullable();
             $table->string('location');
             $table->unsignedBigInteger('address_id');
             $table->unsignedBigInteger('sub_activity_id');
-            $table->foreign('address_id')->references('id')->on('addresses')->onDelete('cascade');
+            $table->foreign('address_id')->references('id')->on('address')->onDelete('cascade');
             $table->foreign('sub_activity_id')->references('id')->on('sub_activity')->onDelete('cascade');
 
             $table->timestamps();
@@ -39,6 +39,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('instance__activities');
+        Schema::dropIfExists('instance_activity');
     }
 };

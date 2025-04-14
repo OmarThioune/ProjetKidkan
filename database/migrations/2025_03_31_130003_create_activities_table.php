@@ -11,20 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('activities', function (Blueprint $table) {
+        Schema::create('activity', function (Blueprint $table) {
             $table->id(); // Primary key
             $table->boolean('cancelation');
             //$table->string('name'); // Name of the activity
             $table->string('description')->nullable(); // Description of the activity
             $table->string('material')->nullable(); // Material needed for the activity
-            $table->integer('minAge')->nullable(); // Minimum age for the activity
-            $table->integer('maxAge')->nullable(); // Maximum age for the activity
+            $table->integer('min_Age')->nullable(); // Minimum age for the activity
+            $table->integer('max_Age')->nullable(); // Maximum age for the activity
             $table->unsignedBigInteger('provider_id')->nullable(); // Foreign key to providers table
             $table->unsignedBigInteger('address_id')->nullable(); // Foreign key to addresses table
             $table->unsignedBigInteger('sub_category_id')->nullable(); // Foregin key to sub_category table
-            $table->foreign('provider_id')->references('id')->on('providers')->onDelete('cascade');
-            $table->foreign('address_id')->references('id')->on('addresses')->onDelete('cascade');
-            $table->foreign('sub_category_id')->references('id')->on('sub_categories')->onDelete('set null');
+            $table->foreign('provider_id')->references('id')->on('provider')->onDelete('set null');
+            $table->foreign('address_id')->references('id')->on('address')->onDelete('cascade');
+            $table->foreign('sub_category_id')->references('id')->on('sub_category')->onDelete('set null');
             $table->timestamps();
         });
     }
@@ -34,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('activities');
+        Schema::dropIfExists('activity');
     }
 };

@@ -11,12 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('subscription_kids', function (Blueprint $table) {
+        Schema::create('subscription_kid', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('kid_id')->nullable();
-            $table->foreign('kid_id')->references('id')->on('kids')->onDelete('cascade');
+            $table->foreign('kid_id')->references('id')->on('kid')->onDelete('set null');
+            $table->unsignedBigInteger('instance_activity_id')->nullable();
+            $table->foreign('instance_activity_id')->references('id')->on('instance_activity')->onDelete('set null');
             $table->string('favorite')->nullable();
-            $table->enum('status', ['En cours', 'En attente', 'Cours terminé', 'Inscrit']);
+            $table->string('status');
             $table->timestamps();
         });
     }
@@ -26,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('subscription_kids');
+        Schema::dropIfExists('subscription_kid');
     }
 };

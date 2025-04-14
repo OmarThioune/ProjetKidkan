@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('waitinglists', function (Blueprint $table) {
+        Schema::create('waiting_list', function (Blueprint $table) {
             $table->id();
             $table->date('date');
             $table->unsignedBigInteger('kid_id')->nullable();
-            $table->foreign('kid_id')->references('id')->on('kids')->onDelete('cascade');
+            $table->foreign('kid_id')->references('id')->on('kid')->onDelete('set null');
             $table->unsignedBigInteger('instance_activity_id')->nullable();
-            $table->foreign('instance_activity_id')->references('id')->on('instance__activities')->onDelete('set null');
+            $table->foreign('instance_activity_id')->references('id')->on('instance_activity')->onDelete('set null');
             $table->timestamps();
         });
     }
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('waitinglists');
+        Schema::dropIfExists('waiting_list');
     }
 };

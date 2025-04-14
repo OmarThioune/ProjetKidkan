@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pricings', function (Blueprint $table) {
+        Schema::create('pricing', function (Blueprint $table) {
             $table->id();
             $table->string('price')->nullable();
             $table->string('type')->nullable();
             $table->unsignedBigInteger('instance_activity_id')->nullable();
-            $table->foreign('instance_activity_id')->references('id')->on('instance__activities')->onDelete('cascade');
+            $table->foreign('instance_activity_id')->references('id')->on('instance_activity')->onDelete('set null');
 
 
 
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pricings');
+        Schema::dropIfExists('pricing');
     }
 };
