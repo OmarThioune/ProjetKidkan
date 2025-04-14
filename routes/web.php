@@ -1,61 +1,27 @@
 <?php
 
-use Inertia\Inertia;// We are going to use this class to render React components
+use App\Http\Controllers\ProfileController;
+use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ActivityController;
-use App\Http\Controllers\AddressController;
-use App\Http\Controllers\categoryController;
-use App\Http\Controllers\ImageController;
-use App\Http\Controllers\InstanceActivityController;
-use App\Http\Controllers\KidController;
-use App\Http\Controllers\PricingController;
-use App\Http\Controllers\ProviderController;
+use Inertia\Inertia;
 
 Route::get('/', function () {
-    return Inertia::render('Test'); // This will get component Test.jsx from the resources/js/Pages/Test.jsx
+    return Inertia::render('Welcome', [
+        'canLogin' => Route::has('login'),
+        'canRegister' => Route::has('register'),
+        'laravelVersion' => Application::VERSION,
+        'phpVersion' => PHP_VERSION,
+    ]);
 });
 
-Route::resource('providers', ProviderController::class);
+Route::get('/dashboard', function () {
+    return Inertia::render('Dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
-
-Route::resource('pricings', PricingController::class);
-
-
-Route::resource('kids', KidController::class);
-
-
-Route::resource('instance-activities', InstanceActivityController::class);
-
-
-Route::resource('images', ImageController::class);
-
-
-Route::resource('categories', categoryController::class);
-Route::resource('addresses', AddressController::class);
-Route::resource('activities', ActivityController::class);
-
-
-Route::get('/', function () {
-    return Inertia::render('Accueil');
-})->name('accueil');
-
-Route::get('/activite', function () {
-    return Inertia::render('Activite');
-})->name('activite');
-
-Route::middleware(['guest'])->group(function () {
-    Route::get('/login', function () {
-        return Inertia::render('Auth/Login');
-    })->name('login');
-
-    Route::get('/register', function () {
-        return Inertia::render('Auth/Register');
-    })->name('register');
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::middleware(['auth'])->group(function () {
-    Route::get('/profile', function () {
-        return Inertia::render('Profile');
-    })->name('profile');
-});
-
+require __DIR__.'/auth.php';
