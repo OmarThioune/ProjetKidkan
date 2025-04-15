@@ -1,18 +1,42 @@
 <?php
 
+/**
+ * Created by Reliese Model.
+ */
+
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class Image
+ * 
+ * @property int $id
+ * @property int|null $activity_id
+ * @property string $image
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * 
+ * @property Activity|null $activity
+ *
+ * @package App\Models
+ */
 class Image extends Model
 {
-    protected $table = 'images';
-    protected $primaryKey = 'image_id';
+	protected $table = 'image';
 
-    protected $fillable = ['title','src','description','alt', 'activity_id'];
+	protected $casts = [
+		'activity_id' => 'int'
+	];
 
-    public function activity()
-    {
-        return $this->belongsTo(Activity::class, 'activity_id');
-    }
+	protected $fillable = [
+		'activity_id',
+		'image'
+	];
+
+	public function activity()
+	{
+		return $this->belongsTo(Activity::class);
+	}
 }
