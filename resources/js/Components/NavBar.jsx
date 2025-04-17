@@ -10,6 +10,8 @@ export default function NavBar() {
                 <Link href="/recherche">Recherche</Link>
                 <Link href="/apropos">À propos</Link>
                 <Link href="/categorie">Catégories</Link>
+                <Link href="/ajouter">Ajouter</Link>
+                <Link href="/activite">Activité</Link>
                 {auth.user && <Link href="/profil">Profil</Link>}
             </div>
             <div className="space-x-4">
