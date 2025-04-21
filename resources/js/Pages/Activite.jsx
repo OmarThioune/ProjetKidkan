@@ -285,6 +285,29 @@ const Activite = () => {
         // rien à faire ici, car le filtrage se fait dynamiquement en bas avec .filter()
     };
 
+    const [showAvis, setShowAvis] = useState(null); // stocke l'ID de l'activité dont on affiche les avis
+    const [commentaire, setCommentaire] = useState("");
+    const [note, setNote] = useState(0);
+    const [avisParActivite, setAvisParActivite] = useState({});
+
+    const ajouterAvis = (idActivite) => {
+        const nouvelAvis = { commentaire, note };
+        setAvisParActivite((prev) => ({
+            ...prev,
+            [idActivite]: [...(prev[idActivite] || []), nouvelAvis]
+        }));
+        setCommentaire("");
+        setNote(0);
+    };
+
+    const Etoiles = ({ note, setNote }) => (
+        <div style={{ display: "flex", gap: "5px", cursor: "pointer" }}>
+            {[1, 2, 3, 4, 5].map((n) => (
+                <span key={n} onClick={() => setNote(n)} style={{ color: n <= note ? "gold" : "gray", fontSize: "20px" }}>★</span>
+            ))}
+        </div>
+    );
+
     const filteredActivities = activities.filter((activity) => {
         return (
             (filtreCategorie === "" || activity.category === filtreCategorie) &&
@@ -446,16 +469,106 @@ const Activite = () => {
                                         border: "none",
                                         borderRadius: "5px",
                                         cursor: "pointer",
+                                        marginRight: "1165px",
                                     }}
                                     onClick={() => toggleDetails(activity.id)}
                                 >
                                     Fermer
                                 </button>
+                                <button
+                                style={{
+                                    backgroundColor: "#ff9800",
+                                    color: "white",
+                                    padding: "10px 20px",
+                                    border: "none",
+                                    borderRadius: "5px",
+                                    cursor: "pointer",
+                                    
+                                }}
+                                onClick={() => setShowAvis(activity.id)}
+                            >
+                                Avis
+                            </button>
+                            
                             </div>
                         </div>
                     )}
+                    {showAvis && (
+    <div style={{ width: "80%", marginTop: "20px", marginBottom: "40px", padding: "20px", border: "1px solid #ccc", borderRadius: "8px" }}>
+        <h3>Laisser un avis pour l'activité : {
+            filteredActivities.find(a => a.id === showAvis)?.name
+        }</h3>
+        
+        <Etoiles note={note} setNote={setNote} />
+        
+        <textarea
+            value={commentaire}
+            onChange={(e) => setCommentaire(e.target.value)}
+            placeholder="Écrivez votre commentaire ici..."
+            rows="4"
+            style={{ width: "100%", marginTop: "10px", padding: "10px", borderRadius: "5px" }}
+        />
+
+        <div style={{ marginTop: "10px" }}>
+            <button
+                onClick={() => ajouterAvis(showAvis)}
+                style={{
+                    backgroundColor: "green",
+                    color: "white",
+                    padding: "10px 20px",
+                    border: "none",
+                    borderRadius: "5px",
+                    cursor: "pointer",
+                    marginRight: "10px"
+                }}
+            >
+                Envoyer
+            </button>
+            <button
+                onClick={() => setShowAvis(null)}
+                style={{
+                    backgroundColor: "gray",
+                    color: "white",
+                    padding: "10px 20px",
+                    border: "none",
+                    borderRadius: "5px",
+                    cursor: "pointer"
+                }}
+            >
+                Fermer
+            </button>
+        </div>
+
+        {/* Affichage des avis */}
+        <div style={{ marginTop: "20px" , textAlign: "center" }}>
+            <h4>Avis existants :</h4>
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                {(avisParActivite[showAvis] || []).length === 0 && <p>Aucun avis pour cette activité.</p>}
+                {(avisParActivite[showAvis] || []).map((avis, index) => (
+                    <div                   key={index}
+                    style={{
+                        marginBottom: "10px",
+                        borderTop: "1px solid #ccc",
+                        paddingTop: "10px",
+                        width: "80%",
+                        textAlign: "left",
+                        backgroundColor: "#f9f9f9",
+                        borderRadius: "8px",
+                        padding: "10px" }}>
+                        <div>
+                            {"★".repeat(avis.note) + "☆".repeat(5 - avis.note)}
+                        </div>
+                        <p>{avis.commentaire}</p>
+                    </div>
+                ))}
+            </div>
+        </div>
+    </div>
+)}
                 </div>
             ))}
+
+            
 
             {filteredActivities.length === 0 && <p>Aucune activité ne correspond aux filtres.</p>}
         </div>
