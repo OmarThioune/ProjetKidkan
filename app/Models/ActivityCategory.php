@@ -6,17 +6,17 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class ActivityCategory
  * 
- * @property int $activity_id
  * @property int $id
+ * @property int $activity_id
+ * @property int $category_id
  * 
  * @property Activity $activity
- * @property Collection|Category[] $categories
+ * @property Category $category
  *
  * @package App\Models
  */
@@ -26,11 +26,13 @@ class ActivityCategory extends Model
 	public $timestamps = false;
 
 	protected $casts = [
-		'activity_id' => 'int'
+		'activity_id' => 'int',
+		'category_id' => 'int'
 	];
 
 	protected $fillable = [
-		'activity_id'
+		'activity_id',
+		'category_id'
 	];
 
 	public function activity()
@@ -38,8 +40,8 @@ class ActivityCategory extends Model
 		return $this->belongsTo(Activity::class);
 	}
 
-	public function categories()
+	public function category()
 	{
-		return $this->hasMany(Category::class);
+		return $this->belongsTo(Category::class);
 	}
 }

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name'); // Name of the sub-category
             $table->text('description')->nullable(); // Description of the sub-category
             $table->timestamps();
+        
         });
     }
 

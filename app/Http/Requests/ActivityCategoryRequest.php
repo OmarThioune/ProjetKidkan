@@ -15,6 +15,7 @@ class ActivityCategoryRequest extends FormRequest
     {
         return [
             'activity_id' => 'integer',
+            'category_id' => 'integer',
         ];
     }
 }

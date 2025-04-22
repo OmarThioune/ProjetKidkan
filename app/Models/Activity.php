@@ -28,7 +28,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property Address|null $address
  * @property Provider|null $provider
  * @property SubCategory|null $sub_category
- * @property Collection|ActivityCategory[] $activity_categories
+ * @property Collection|Category[] $categories
  * @property Collection|Image[] $images
  * @property Collection|Opinion[] $opinions
  * @property Collection|SubActivity[] $sub_activities
@@ -74,9 +74,10 @@ class Activity extends Model
 		return $this->belongsTo(SubCategory::class);
 	}
 
-	public function activity_categories()
+	public function categories()
 	{
-		return $this->hasMany(ActivityCategory::class);
+		return $this->belongsToMany(Category::class)
+					->withPivot('id');
 	}
 
 	public function images()

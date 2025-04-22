@@ -14,9 +14,8 @@ class CategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'string|max:255',
             'sub_category_id' => 'integer',
-            'activity_category_id' => 'integer',
+            'name' => 'string|max:255',
         ];
     }
 }

@@ -11,6 +11,7 @@ class ActivityCategoryResource extends JsonResource
     {
         return [
             'activity_id' => $this->activity_id,
+            'category_id' => $this->category_id,
         ];
     }
 }

@@ -23,7 +23,7 @@ return new class extends Migration
             $table->unsignedBigInteger('address_id')->nullable(); // Foreign key to addresses table
             $table->unsignedBigInteger('sub_category_id')->nullable(); // Foregin key to sub_category table
             $table->foreign('provider_id')->references('id')->on('provider')->onDelete('set null');
-            $table->foreign('address_id')->references('id')->on('address')->onDelete('cascade');
+            $table->foreign('address_id')->references('id')->on('address')->onDelete('set null');
             $table->foreign('sub_category_id')->references('id')->on('sub_category')->onDelete('set null');
             $table->timestamps();
         });
