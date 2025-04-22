@@ -1,173 +1,183 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 const Recherche = () => {
-    const [niveau, setNiveau] = useState([]);
-    const [activite, setActivite] = useState('');
-    const [rue, setRue] = useState('');
-    const [ville, setVille] = useState('');
-    const [adresse, setAdresse] = useState('');
-    const [categorie, setCategorie] = useState('');
-    const [sousCategorie, setSousCategorie] = useState('');
-    const [resultats, setResultats] = useState([]);
+    const [name, setName] = useState("");
+    const [phone, setPhone] = useState("");
+    const [children, setChildren] = useState([
+        {
+            name: "Alice",
+            age: 8,
+            activities: ["Danse", "Natation", "Peinture", "Piano"],
+        },
+        {
+            name: "Bob",
+            age: 10,
+            activities: ["Football", "Échecs", "Guitare", "Mathématiques"],
+        },
+        {
+            name: "Charlie",
+            age: 7,
+            activities: ["Lecture", "Théâtre", "Tennis", "Cuisine"],
+        },
+        {
+            name: "Diana",
+            age: 9,
+            activities: ["Basketball", "Yoga", "Chant", "Informatique"],
+        },
+    ]);
+    const [childName, setChildName] = useState("");
+    const [childAge, setChildAge] = useState("");
 
-    const categories = {
-        Sport: ['Football', 'Basketball', 'Tennis'],
-        Musique: ['Guitare', 'Piano', 'Violon'],
-        Art: ['Peinture', 'Sculpture', 'Dessin'],
+    const handleAddChild = () => {
+        if (childName && childAge) {
+            setChildren([
+                ...children,
+                { name: childName, age: childAge, activities: [] },
+            ]);
+            setChildName("");
+            setChildAge("");
+        }
     };
 
-    const handleAppliquer = () => {
-        // Simuler une recherche d'activités correspondant aux critères
-        const mockResultats = [
-            { id: 1, nom: 'Activité 1', categorie, sousCategorie, ville },
-            { id: 2, nom: 'Activité 2', categorie, sousCategorie, ville },
-        ];
-        setResultats(mockResultats);
-    };
-
-    const handleReinitialiser = () => {
-        setNiveau([]);
-        setActivite('');
-        setRue('');
-        setVille('');
-        setAdresse('');
-        setCategorie('');
-        setSousCategorie('');
-        setResultats([]);
+    const handleCancelActivity = (childIndex, activityIndex) => {
+        const updatedChildren = [...children];
+        updatedChildren[childIndex].activities.splice(activityIndex, 1);
+        setChildren(updatedChildren);
     };
 
     return (
-        <div style={{ display: 'flex', alignItems: 'flex-start' }}>
-            <div style={{ width: '300px', marginRight: '20px' }}>
-                <h2>Recherche</h2>
-                <div>
-                    <label>Niveau :</label>
-                    <div>
-                        {['Débutant', 'Intermédiaire', 'Avancé'].map((niv) => (
-                            <label key={niv}>
-                                <input
-                                    type="checkbox"
-                                    value={niv}
-                                    checked={niveau.includes(niv)}
-                                    onChange={(e) => {
-                                        const value = e.target.value;
-                                        setNiveau((prev) =>
-                                            prev.includes(value)
-                                                ? prev.filter((n) => n !== value)
-                                                : [...prev, value]
-                                        );
-                                    }}
-                                />
-                                {niv}
-                            </label>
-                        ))}
-                    </div>
+        <div style={{
+            maxWidth: "800px",
+            margin: "40px auto",
+            padding: "30px",
+            borderRadius: "10px",
+            backgroundColor: "#f9f9f9",
+            boxShadow: "0 0 15px rgba(0,0,0,0.1)",
+            fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif"
+        }}>
+            <h1 style={{ textAlign: "center", color: "#333" }}>Modifier les informations</h1>
+
+            <div style={{ marginBottom: "20px" }}>
+                <label style={labelStyle}>
+                    Nom:
+                    <input
+                        type="text"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        style={inputStyle}
+                    />
+                </label>
+                <label style={labelStyle}>
+                    Numéro de téléphone:
+                    <input
+                        type="text"
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
+                        style={inputStyle}
+                    />
+                </label>
+                <div style={{ textAlign: "center" }}>
+                    <button style={buttonStyle}>Modifier</button>
                 </div>
-                <div>
-                    <label>Âge :</label>
+            </div>
+
+          
+            <div style={{ marginBottom: "20px" }}>
+                <label style={labelStyle}>
+                    Nom de l'enfant:
+                    <input
+                        type="text"
+                        value={childName}
+                        onChange={(e) => setChildName(e.target.value)}
+                        style={inputStyle}
+                    />
+                </label>
+                <label style={labelStyle}>
+                    Âge:
                     <input
                         type="number"
-                        value={activite} // Remplacer activite par age
-                        onChange={(e) => setActivite(e.target.value)} // Remplacer setActivite par setAge
+                        value={childAge}
+                        onChange={(e) => setChildAge(e.target.value)}
+                        style={inputStyle}
                     />
-                </div>
-                <div>
-                    <label>Rue :</label>
-                    <input
-                        type="text"
-                        value={rue}
-                        onChange={(e) => setRue(e.target.value)}
-                    />
-                </div>
-                <div>
-                    <label>Ville :</label>
-                    <input
-                        type="text"
-                        value={ville}
-                        onChange={(e) => setVille(e.target.value)}
-                    />
-                </div>
-                <div>
-                    <label>Adresse :</label>
-                    <input
-                        type="text"
-                        value={adresse}
-                        onChange={(e) => setAdresse(e.target.value)}
-                    />
-                </div>
-                <div>
-                    <label>Catégorie :</label>
-                    <select
-                        value={categorie}
-                        onChange={(e) => {
-                            setCategorie(e.target.value);
-                            setSousCategorie('');
-                        }}
-                    >
-                        <option value="">-- Choisir une catégorie --</option>
-                        {Object.keys(categories).map((cat) => (
-                            <option key={cat} value={cat}>
-                                {cat}
-                            </option>
-                        ))}
-                    </select>
-                </div>
-                {categorie && (
-                    <div>
-                        <label>Sous-catégorie :</label>
-                        <select
-                            value={sousCategorie}
-                            onChange={(e) => setSousCategorie(e.target.value)}
-                        >
-                            <option value="">-- Choisir une sous-catégorie --</option>
-                            {categories[categorie].map((subCat) => (
-                                <option key={subCat} value={subCat}>
-                                    {subCat}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-                )}
-                <div style={{ marginTop: '20px' }}>
-                    <button
-                        style={{
-                            backgroundColor: 'blue',
-                            color: 'white',
-                            padding: '10px',
-                            marginRight: '10px',
-                        }}
-                        onClick={handleAppliquer}
-                    >
-                        Appliquer
-                    </button>
-                    <button
-                        style={{
-                            backgroundColor: 'gray',
-                            color: 'white',
-                            padding: '10px',
-                        }}
-                        onClick={handleReinitialiser}
-                    >
-                        Réinitialiser
-                    </button>
+                </label>
+                <div style={{ textAlign: "center" }}>
+                    <button onClick={handleAddChild} style={buttonStyle}>Ajouter</button>
                 </div>
             </div>
-            <div>
-                <h2>Résultats</h2>
-                {resultats.length > 0 ? (
-                    <ul>
-                        {resultats.map((resultat) => (
-                            <li key={resultat.id}>
-                                {resultat.nom} - {resultat.categorie} ({resultat.sousCategorie})
-                            </li>
-                        ))}
-                    </ul>
-                ) : (
-                    <p>Aucun résultat trouvé.</p>
-                )}
-            </div>
+
+            <h2 style={{ color: "#444" }}>Liste des enfants</h2>
+            {children.map((child, index) => (
+                <div key={index} style={{
+                    marginBottom: "10px",
+                    backgroundColor: "#fff",
+                    borderRadius: "8px",
+                    padding: "10px 15px",
+                    boxShadow: "0 0 5px rgba(0,0,0,0.05)"
+                }}>
+                    <details>
+                        <summary style={{ cursor: "pointer", fontWeight: "bold" }}>
+                            {child.name} - {child.age} ans
+                        </summary>
+                        <ul style={{ marginTop: "10px", paddingLeft: "20px" }}>
+                            {child.activities.length > 0 ? (
+                                child.activities.map((activity, activityIndex) => (
+                                    <li key={activityIndex} style={{ marginBottom: "5px" }}>
+                                        {activity}{" "}
+                                        <button
+                                            onClick={() =>
+                                                handleCancelActivity(index, activityIndex)
+                                            }
+                                            style={cancelButtonStyle}
+                                        >
+                                            Annuler
+                                        </button>
+                                    </li>
+                                ))
+                            ) : (
+                                <li>Aucune activité inscrite</li>
+                            )}
+                        </ul>
+                    </details>
+                </div>
+            ))}
         </div>
     );
+};
+
+const labelStyle = {
+    display: "block",
+    marginBottom: "10px",
+    color: "#555",
+};
+
+const inputStyle = {
+    display: "block",
+    width: "100%",
+    padding: "8px",
+    marginTop: "5px",
+    borderRadius: "5px",
+    border: "1px solid #ccc",
+    fontSize: "14px",
+};
+
+const buttonStyle = {
+    marginTop: "15px",
+    backgroundColor: "#007bff",
+    color: "white",
+    padding: "10px 20px",
+    border: "none",
+    borderRadius: "5px",
+    cursor: "pointer",
+};
+
+const cancelButtonStyle = {
+    marginLeft: "10px",
+    color: "#dc3545",
+    background: "none",
+    border: "none",
+    cursor: "pointer",
+    fontWeight: "bold"
 };
 
 export default Recherche;
