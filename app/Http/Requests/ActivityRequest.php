@@ -15,7 +15,7 @@ class ActivityRequest extends FormRequest
     {
         return [
             'cancelation' => 'integer',
-            'description' => 'string|max:255',
+            'description' => 'string',
             'material' => 'string|max:255',
             'min_Age' => 'integer',
             'max_Age' => 'integer',

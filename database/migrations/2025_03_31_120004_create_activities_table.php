@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id(); // Primary key
             $table->boolean('cancelation');
             //$table->string('name'); // Name of the activity
-            $table->string('description')->nullable(); // Description of the activity
+            $table->text('description')->nullable(); // Description of the activity
             $table->string('material')->nullable(); // Material needed for the activity
             $table->integer('min_Age')->nullable(); // Minimum age for the activity
             $table->integer('max_Age')->nullable(); // Maximum age for the activity
