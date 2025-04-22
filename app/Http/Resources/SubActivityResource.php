@@ -14,7 +14,7 @@ class SubActivityResource extends JsonResource
             'min_Age' => $this->min_Age,
             'max_Age' => $this->max_Age,
             'description' => $this->description,
-            'range' => $this->range,
+            'sub_activity_range' => $this->sub_activity_range,
             'activity_id' => $this->activity_id,
         ];
     }

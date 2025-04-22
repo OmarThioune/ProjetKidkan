@@ -18,7 +18,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int|null $min_Age
  * @property int|null $max_Age
  * @property string|null $description
- * @property string|null $range
+ * @property string|null $sub_activity_range
  * @property int|null $activity_id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
@@ -43,7 +43,7 @@ class SubActivity extends Model
 		'min_Age',
 		'max_Age',
 		'description',
-		'range',
+		'sub_activity_range',
 		'activity_id'
 	];
 
