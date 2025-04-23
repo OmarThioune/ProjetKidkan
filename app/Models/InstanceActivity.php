@@ -22,10 +22,10 @@ use Illuminate\Database\Eloquent\Model;
  * @property Carbon $debutHour
  * @property Carbon $endHour
  * @property string $status
- * @property string $level
  * @property int $minutes
  * @property Carbon|null $debutSubscription
  * @property string $location
+ * @property bool $cancelation
  * @property int $address_id
  * @property int $sub_activity_id
  * @property Carbon|null $created_at
@@ -53,6 +53,7 @@ class InstanceActivity extends Model
 		'endHour' => 'datetime',
 		'minutes' => 'int',
 		'debutSubscription' => 'datetime',
+		'cancelation' => 'bool',
 		'address_id' => 'int',
 		'sub_activity_id' => 'int'
 	];
@@ -66,10 +67,10 @@ class InstanceActivity extends Model
 		'debutHour',
 		'endHour',
 		'status',
-		'level',
 		'minutes',
 		'debutSubscription',
 		'location',
+		'cancelation',
 		'address_id',
 		'sub_activity_id'
 	];

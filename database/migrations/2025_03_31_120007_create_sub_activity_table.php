@@ -17,7 +17,8 @@ return new class extends Migration
             $table->integer('min_Age')->nullable(); 
             $table->integer('max_Age')->nullable();
             $table->text('description')->nullable();
-            $table->string('sub_activity_range')->nullable();
+            $table->string('material')->nullable(); // Material needed for the activity
+            $table->string('level')->nullable();
             $table->unsignedBigInteger('activity_id')->nullable();
             $table->foreign('activity_id')->references('id')->on('activity')->onDelete('set null');
             $table->timestamps();

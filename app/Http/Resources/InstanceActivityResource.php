@@ -18,10 +18,10 @@ class InstanceActivityResource extends JsonResource
             'debutHour' => $this->debutHour,
             'endHour' => $this->endHour,
             'status' => $this->status,
-            'level' => $this->level,
             'minutes' => $this->minutes,
             'debutSubscription' => $this->debutSubscription,
             'location' => $this->location,
+            'cancelation' => $this->cancelation,
             'address_id' => $this->address_id,
             'sub_activity_id' => $this->sub_activity_id,
         ];

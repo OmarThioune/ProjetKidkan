@@ -24,7 +24,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * 
- * @property Collection|Activity[] $activities
  * @property Collection|InstanceActivity[] $instance_activities
  *
  * @package App\Models
@@ -42,11 +41,6 @@ class Address extends Model
 		'country',
 		'address_description'
 	];
-
-	public function activities()
-	{
-		return $this->hasMany(Activity::class);
-	}
 
 	public function instance_activities()
 	{

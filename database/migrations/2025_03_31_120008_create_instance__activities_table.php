@@ -21,15 +21,15 @@ return new class extends Migration
             $table->time('debutHour');
             $table->time('endHour');
             $table->string('status');
-            $table->string('level');
             $table->integer('minutes'); //Time of the course in minutes
             $table->dateTime('debutSubscription')->nullable();
             $table->string('location');
+            $table->boolean('cancelation');
             $table->unsignedBigInteger('address_id');
             $table->unsignedBigInteger('sub_activity_id');
             $table->foreign('address_id')->references('id')->on('address')->onDelete('cascade');
             $table->foreign('sub_activity_id')->references('id')->on('sub_activity')->onDelete('cascade');
-
+            
             $table->timestamps();
         });
     }

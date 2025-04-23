@@ -18,7 +18,8 @@ class SubActivityRequest extends FormRequest
             'min_Age' => 'integer',
             'max_Age' => 'integer',
             'description' => 'string',
-            'sub_activity_range' => 'string|max:255',
+            'material' => 'string|max:255',
+            'level' => 'string|max:255',
             'activity_id' => 'integer',
         ];
     }

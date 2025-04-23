@@ -22,10 +22,10 @@ class InstanceActivityRequest extends FormRequest
             'debutHour' => 'string',
             'endHour' => 'string',
             'status' => 'string|max:255',
-            'level' => 'string|max:255',
             'minutes' => 'integer',
             'debutSubscription' => 'date',
             'location' => 'string|max:255',
+            'cancelation' => 'integer',
             'address_id' => 'integer',
             'sub_activity_id' => 'integer',
         ];

@@ -14,13 +14,9 @@ class ActivityRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'cancelation' => 'integer',
+            'name' => 'string|max:255',
             'description' => 'string',
-            'material' => 'string|max:255',
-            'min_Age' => 'integer',
-            'max_Age' => 'integer',
             'provider_id' => 'integer',
-            'address_id' => 'integer',
             'sub_category_id' => 'integer',
         ];
     }
