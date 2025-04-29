@@ -23,7 +23,7 @@ const Activite = () => {
     const [avisParActivite, setAvisParActivite] = useState({});
 
     useEffect(() => {
-        axios.get("/api/activities")
+        axios.get("/api/instance_activities")
             .then((response) => {
                 setActivities(response.data);
             })
