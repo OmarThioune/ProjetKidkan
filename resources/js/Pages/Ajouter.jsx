@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import axios from "axios";
+import './Ajouter.css';
+
 
 const Ajouter = () => {
     const [formData, setFormData] = useState({
@@ -17,76 +20,30 @@ const Ajouter = () => {
         dateFin: "",
     });
 
-    const [activites, setActivites] = useState([
-        {
-            nomActivite: "Soccer",
-            categorie: "Sport",
-            sousCategorie: "Football",
-            description: "Un sport d'équipe populaire.",
-            materielRequis: "Ballon, Chaussures",
-            niveau: "intermediaire",
-            ageMin: 10,
-            ageMax: 50,
-            rue: "Rue des Sports",
-            ville: "Paris",
-            adresse: "123 Rue des Sports, Paris",
-            dateDebut: "2023-01-01",
-            dateFin: "2023-12-31",
-        },
-        {
-            nomActivite: "Basket",
-            categorie: "Sport",
-            sousCategorie: "Basketball",
-            description: "Un sport d'équipe avec un ballon.",
-            materielRequis: "Ballon, Panier",
-            niveau: "avancé",
-            ageMin: 12,
-            ageMax: 40,
-            rue: "Rue des Panier",
-            ville: "Lyon",
-            adresse: "456 Rue des Panier, Lyon",
-            dateDebut: "2023-02-01",
-            dateFin: "2023-11-30",
-        },
-        {
-            nomActivite: "Tennis",
-            categorie: "Sport",
-            sousCategorie: "Tennis",
-            description: "Un sport de raquette.",
-            materielRequis: "Raquette, Balles",
-            niveau: "competitif",
-            ageMin: 15,
-            ageMax: 60,
-            rue: "Rue des Raquettes",
-            ville: "Marseille",
-            adresse: "789 Rue des Raquettes, Marseille",
-            dateDebut: "2023-03-01",
-            dateFin: "2023-10-31",
-        },
-    ]);
+    const [activites, setActivites] = useState([]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
+        setFormData((prev) => ({ ...prev, [name]: value }));
     };
 
-    const handleAdd = () => {
-        setActivites([...activites, formData]);
-        setFormData({
-            nomActivite: "",
-            categorie: "",
-            sousCategorie: "",
-            description: "",
-            materielRequis: "",
-            niveau: "debutant",
-            ageMin: "",
-            ageMax: "",
-            rue: "",
-            ville: "",
-            adresse: "",
-            dateDebut: "",
-            dateFin: "",
-        });
+    const handleAdd = async () => {
+        try {
+            const response = await axios.post("/api/instance_activities", {
+                ...formData,
+                adresse: {
+                    rue: formData.rue,
+                    ville: formData.ville,
+                    adresse: formData.adresse
+                }
+            });
+            setActivites((prev) => [...prev, response.data]);
+            handleReset();
+            alert("Activité ajoutée avec succès !");
+        } catch (error) {
+            console.error("Erreur lors de l'ajout :", error);
+            alert("Erreur lors de l'ajout de l'activité.");
+        }
     };
 
     const handleReset = () => {
@@ -107,213 +64,73 @@ const Ajouter = () => {
         });
     };
 
-    const handleView = (activite) => {
-        alert(JSON.stringify(activite, null, 2));
+    const handleView = async (id) => {
+        try {
+            const response = await axios.get(`/api/instance_activities/${id}`);
+            alert(JSON.stringify(response.data, null, 2));
+        } catch (error) {
+            console.error("Erreur de récupération :", error);
+            alert("Impossible de récupérer l'activité.");
+        }
     };
 
     return (
-        <div style={{ textAlign: "center", padding: "20px" }}>
+        <div className="ajouter-container">
             <h1>Ajouter une Activité</h1>
-            <form style={{ display: "inline-block", textAlign: "left", maxWidth: "400px", width: "100%" }}>
-                <input
-                    type="text"
-                    name="nomActivite"
-                    placeholder="Nom de l'activité"
-                    value={formData.nomActivite}
-                    onChange={handleChange}
-                    style={{ width: "100%", marginBottom: "10px", padding: "8px" }}
-                />
-                <input
-                    type="text"
-                    name="categorie"
-                    placeholder="Catégorie"
-                    value={formData.categorie}
-                    onChange={handleChange}
-                    style={{ width: "100%", marginBottom: "10px", padding: "8px" }}
-                />
-                <input
-                    type="text"
-                    name="sousCategorie"
-                    placeholder="Sous-catégorie"
-                    value={formData.sousCategorie}
-                    onChange={handleChange}
-                    style={{ width: "100%", marginBottom: "10px", padding: "8px" }}
-                />
+            <form className="ajouter-form">
+                {[
+                    "nomActivite", "categorie", "sousCategorie", "materielRequis",
+                    "ageMin", "ageMax", "rue", "ville", "adresse", "dateDebut", "dateFin"
+                ].map((field) => (
+                    <input
+                        key={field}
+                        type={field.includes("age") ? "number" : field.includes("date") ? "date" : "text"}
+                        name={field}
+                        placeholder={field}
+                        value={formData[field]}
+                        onChange={handleChange}
+                        className="ajouter-input"
+                    />
+                ))}
+
                 <textarea
                     name="description"
                     placeholder="Description"
                     value={formData.description}
                     onChange={handleChange}
-                    style={{ width: "100%", marginBottom: "10px", padding: "8px" }}
+                    className="ajouter-input"
                 />
-                <input
-                    type="text"
-                    name="materielRequis"
-                    placeholder="Matériel requis"
-                    value={formData.materielRequis}
-                    onChange={handleChange}
-                    style={{ width: "100%", marginBottom: "10px", padding: "8px" }}
-                />
+
                 <select
                     name="niveau"
                     value={formData.niveau}
                     onChange={handleChange}
-                    style={{ width: "100%", marginBottom: "10px", padding: "8px" }}
+                    className="ajouter-input"
                 >
                     <option value="debutant">Débutant</option>
                     <option value="intermediaire">Intermédiaire</option>
                     <option value="avancé">Avancé</option>
                     <option value="competitif">Compétitif</option>
                 </select>
-                <input
-                    type="number"
-                    name="ageMin"
-                    placeholder="Âge minimum"
-                    value={formData.ageMin}
-                    onChange={handleChange}
-                    style={{ width: "100%", marginBottom: "10px", padding: "8px" }}
-                />
-                <input
-                    type="number"
-                    name="ageMax"
-                    placeholder="Âge maximum"
-                    value={formData.ageMax}
-                    onChange={handleChange}
-                    style={{ width: "100%", marginBottom: "10px", padding: "8px" }}
-                />
-                <input
-                    type="text"
-                    name="rue"
-                    placeholder="Rue"
-                    value={formData.rue}
-                    onChange={handleChange}
-                    style={{ width: "100%", marginBottom: "10px", padding: "8px" }}
-                />
-                <input
-                    type="text"
-                    name="ville"
-                    placeholder="Ville"
-                    value={formData.ville}
-                    onChange={handleChange}
-                    style={{ width: "100%", marginBottom: "10px", padding: "8px" }}
-                />
-                <input
-                    type="text"
-                    name="adresse"
-                    placeholder="Adresse"
-                    value={formData.adresse}
-                    onChange={handleChange}
-                    style={{ width: "100%", marginBottom: "10px", padding: "8px" }}
-                />
-                <input
-                    type="date"
-                    name="dateDebut"
-                    placeholder="Date de début"
-                    value={formData.dateDebut}
-                    onChange={handleChange}
-                    style={{ width: "100%", marginBottom: "10px", padding: "8px" }}
-                />
-                <input
-                    type="date"
-                    name="dateFin"
-                    placeholder="Date de fin"
-                    value={formData.dateFin}
-                    onChange={handleChange}
-                    style={{ width: "100%", marginBottom: "10px", padding: "8px" }}
-                />
-                <button
-                    type="button"
-                    onClick={handleAdd}
-                    style={{
-                        width: "48%",
-                        marginRight: "4%",
-                        padding: "10px",
-                        backgroundColor: "blue",
-                        color: "white",
-                        border: "none",
-                        cursor: "pointer",
-                    }}
-                >
-                    Ajouter
-                </button>
-                <button
-                    type="button"
-                    onClick={handleReset}
-                    style={{
-                        width: "48%",
-                        padding: "10px",
-                        backgroundColor: "gray",
-                        color: "white",
-                        border: "none",
-                        cursor: "pointer",
-                    }}
-                >
-                    Réinitialiser
-                </button>
+
+                <div className="ajouter-buttons">
+                    <button type="button" onClick={handleAdd} className="ajouter-btn blue">
+                        Ajouter
+                    </button>
+                    <button type="button" onClick={handleReset} className="ajouter-btn gray">
+                        Réinitialiser
+                    </button>
+                </div>
             </form>
+
             <h2>Liste des Activités</h2>
-            <ul style={{ listStyleType: "none", padding: 0 }}>
+            <ul className="ajouter-list">
                 {activites.map((activite, index) => (
-                    <li
-                        key={index}
-                        style={{
-                            border: "1px solid #ccc",
-                            borderRadius: "8px",
-                            padding: "10px",
-                            margin: "10px auto",
-                            maxWidth: "400px",
-                            display: "flex",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                        }}
-                    >
+                    <li key={index} className="ajouter-list-item">
                         <span>{activite.nomActivite}</span>
-                        <div style={{ display: "flex", gap: "10px" }}>
-                            <button
-                                onClick={() => {
-                                    const updatedActivite = prompt("Modifier l'activité (JSON format):", JSON.stringify(activite, null, 2));
-                                    if (updatedActivite) {
-                                        const parsedActivite = JSON.parse(updatedActivite);
-                                        setActivites(activites.map((a, i) => (i === index ? parsedActivite : a)));
-                                    }
-                                }}
-                                style={{
-                                    backgroundColor: "blue",
-                                    color: "white",
-                                    border: "none",
-                                    padding: "5px 10px",
-                                    borderRadius: "4px",
-                                    cursor: "pointer",
-                                }}
-                            >
-                                Update
-                            </button>
-                            <button
-                                onClick={() => handleView(activite)}
-                                style={{
-                                    backgroundColor: "blue",
-                                    color: "white",
-                                    border: "none",
-                                    padding: "5px 10px",
-                                    borderRadius: "4px",
-                                    cursor: "pointer",
-                                }}
-                            >
-                                View
-                            </button>
-                            <button
-                                onClick={() => setActivites(activites.filter((_, i) => i !== index))}
-                                style={{
-                                    backgroundColor: "blue",
-                                    color: "white",
-                                    border: "none",
-                                    padding: "5px 10px",
-                                    borderRadius: "4px",
-                                    cursor: "pointer",
-                                }}
-                            >
-                                Delete
-                            </button>
+                        <div className="ajouter-list-actions">
+                            <button onClick={() => handleView(activite.id)} className="ajouter-btn blue">Voir</button>
+                            <button onClick={() => setActivites(activites.filter((_, i) => i !== index))} className="ajouter-btn red">Supprimer</button>
                         </div>
                     </li>
                 ))}
