@@ -17,6 +17,7 @@ class SubActivityResource extends JsonResource
             'material' => $this->material,
             'level' => $this->level,
             'activity_id' => $this->activity_id,
+            'activity' => new ActivityResource($this->whenLoaded('activity')),
         ];
     }
 }

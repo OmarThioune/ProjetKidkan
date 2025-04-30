@@ -29,6 +29,7 @@ class KidController extends Controller
 
     public function show(Kid $kid): KidResource
     {
+        $kid->load('user');
         return KidResource::make($kid);
     }
 

@@ -13,6 +13,7 @@ class KidResource extends JsonResource
             'user_id' => $this->user_id,
             'name' => $this->name,
             'age' => $this->age,
+            'user' => new UserResource($this->whenLoaded('user')),
         ];
     }
 }

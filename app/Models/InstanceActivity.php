@@ -80,14 +80,14 @@ class InstanceActivity extends Model
 		return $this->belongsTo(Address::class);
 	}
 
-	public function sub_activity()
+	public function subActivity()
 	{
 		return $this->belongsTo(SubActivity::class);
 	}
 
 	public function pricings()
 	{
-		return $this->hasMany(Pricing::class);
+		return $this->hasMany(Pricing::class, 'instance_activity_id');
 	}
 
 	public function subscription_kids()

@@ -24,7 +24,10 @@ class InstanceActivityResource extends JsonResource
             'cancelation' => $this->cancelation,
             'address_id' => $this->address_id,
             'sub_activity_id' => $this->sub_activity_id,
-            'activity_name' => $this->sub_activity->activity->name ?? null,
+            'sub_activity' => new SubActivityResource($this->whenLoaded('subActivity')),
+            'address' => new AddressResource($this->whenLoaded('address')),
+            'pricings' => PricingResource::collection($this->whenLoaded('pricings')),
+            //'activity_name' => $this->sub_activity->activity->name ?? null,
 
         ];
     }

@@ -13,7 +13,9 @@ class InstanceActivityController extends Controller
 {
     public function index(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
-        return InstanceActivityResource::collection(InstanceActivity::latest()->paginate(10));
+        return InstanceActivityResource::collection(
+            InstanceActivity::with(['subActivity.activity', 'address', 'pricings'])->latest()->paginate(10)
+        );
     }
 
     public function store(InstanceActivityRequest $request): InstanceActivityResource|\Illuminate\Http\JsonResponse
@@ -29,6 +31,7 @@ class InstanceActivityController extends Controller
 
     public function show(InstanceActivity $instanceActivity): InstanceActivityResource
     {
+        $instanceActivity->load(['subActivity.activity', 'address', 'pricings']);
         return InstanceActivityResource::make($instanceActivity);
     }
 
