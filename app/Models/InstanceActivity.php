@@ -87,7 +87,7 @@ class InstanceActivity extends Model
 
 	public function pricings()
 	{
-		return $this->hasMany(Pricing::class, 'instance_activity_id');
+		return $this->hasMany(Pricing::class);
 	}
 
 	public function subscription_kids()

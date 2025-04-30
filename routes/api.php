@@ -9,7 +9,6 @@ use App\Http\Controllers\PricingController;
 use App\Http\Controllers\KidController;
 
 Route::apiResource('/activities', App\Http\Controllers\API\ActivityController::class);
-//Route::get('/addresses', [App\Http\Controllers\API\AddressController::class, 'index']);
 Route::apiResource('/activity_categories', App\Http\Controllers\API\ActivityCategoryController::class);
 Route::apiResource('/addresses', App\Http\Controllers\API\AddressController::class);
 Route::apiResource('/categories', App\Http\Controllers\API\CategoryController::class);
@@ -23,3 +22,4 @@ Route::apiResource('/sub_activities', App\Http\Controllers\API\SubActivityContro
 Route::apiResource('/subscription_kids', App\Http\Controllers\API\SubscriptionKidController::class);
 Route::apiResource('/users', App\Http\Controllers\API\UserController::class);
 Route::apiResource('/waiting_lists', App\Http\Controllers\API\WaitingListController::class);
+Route::apiResource('/sub_categories', App\Http\Controllers\API\SubCategoryController::class);
