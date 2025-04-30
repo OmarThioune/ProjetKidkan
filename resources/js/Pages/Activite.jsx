@@ -25,7 +25,7 @@ const Activite = () => {
     useEffect(() => {
         axios.get("/api/instance_activities")
             .then((response) => {
-                setActivities(response.data);
+                setActivities(response.data);   
             })
             .catch((error) => {
                 console.error("Erreur lors du chargement des activités:", error);
