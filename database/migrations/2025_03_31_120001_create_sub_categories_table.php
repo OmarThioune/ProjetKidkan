@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id(); // Primary key
             $table->string('name'); // Name of the sub-category
             $table->text('description')->nullable(); // Description of the sub-category
+            $table->unsignedBigInteger('category_id')->nullable(); 
+            $table->foreign('category_id')->references('id')->on('category')->onDelete('set null');
             $table->timestamps();
         
         });

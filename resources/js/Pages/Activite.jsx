@@ -61,7 +61,7 @@ const Activite = () => {
 
     const filteredActivities = activities.filter((instanceActivity) => {
         return (
-            (filtreCategorie === "" || instanceActivity.sub_activity.activity.sub_category.categories[0].name === filtreCategorie) &&
+            (filtreCategorie === "" || instanceActivity.sub_activity.activity.sub_category.category.name === filtreCategorie) &&
             (filtreNiveau === "" || instanceActivity.level === filtreNiveau) &&
             (filtreAge === "" || parseInt(instanceActivity.requiredAge) === parseInt(filtreAge)) &&
             (filtreDebut === "" || instanceActivity.startDate === filtreDebut) &&
@@ -106,7 +106,7 @@ const Activite = () => {
 
             {filteredActivities.map((instanceActivity) => (
                 <div key={instanceActivity.id} className="activity-card">
-                    <h3>{instanceActivity.sub_activity.activity.sub_category.categories[0].name}</h3>
+                    <h3>{instanceActivity.sub_activity.activity.sub_category.category.name}</h3>
                     <p><strong>Date début:</strong> {instanceActivity.startDate} | <strong>Date fin:</strong> {instanceActivity.endDate}</p>
                     <p><strong>Places restantes:</strong> {instanceActivity.remainingPlaces}</p>
                     <button className="primary-button" onClick={() => toggleDetails(instanceActivity.id)}>Consulter</button>

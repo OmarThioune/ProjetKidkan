@@ -16,6 +16,7 @@ class SubCategoryRequest extends FormRequest
         return [
             'name' => 'string|max:255',
             'description' => 'string',
+            'category_id' => 'integer',
         ];
     }
 }
