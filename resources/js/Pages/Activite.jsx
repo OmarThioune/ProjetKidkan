@@ -25,7 +25,7 @@ const Activite = () => {
     useEffect(() => {
         axios.get("/api/instance_activities")
             .then((response) => {
-                setActivities(response.data);   
+                setActivities(response.data.data);
             })
             .catch((error) => {
                 console.error("Erreur lors du chargement des activités:", error);
@@ -105,7 +105,7 @@ const Activite = () => {
 
             {filteredActivities.map((activity) => (
                 <div key={activity.id} className="activity-card">
-                    <h3>{activity.name}</h3>
+                    <h3>{activity.sub_activity.activity.name}</h3>
                     <p><strong>Date début:</strong> {activity.startDate} | <strong>Date fin:</strong> {activity.endDate}</p>
                     <p><strong>Places restantes:</strong> {activity.remainingPlaces}</p>
                     <button className="primary-button" onClick={() => toggleDetails(activity.id)}>Consulter</button>
