@@ -33,6 +33,7 @@ class Category extends Model
 	];
 
 	protected $fillable = [
+		'id',
 		'sub_category_id',
 		'name'
 	];

@@ -3,7 +3,7 @@ import axios from "axios";
 import "./Activite.css";
 
 const niveaux = ["Débutant", "Intermédiaire", "Avancé"];
-const categories = ["Art", "Sport", "Technologie"];
+const categories = ["TEST", "Sport", "Technologie"];
 const ages = [6, 8, 10, 12, 14];
 const datesDebut = ["2024-07-01", "2024-08-01", "2024-09-01"];
 const datesFin = ["2024-07-31", "2024-08-31", "2024-09-30"];
@@ -25,6 +25,7 @@ const Activite = () => {
     useEffect(() => {
         axios.get("/api/instance_activities")
             .then((response) => {
+                console.log(response.data.data);
                 setActivities(response.data.data);
             })
             .catch((error) => {
@@ -58,13 +59,13 @@ const Activite = () => {
         </div>
     );
 
-    const filteredActivities = activities.filter((activity) => {
+    const filteredActivities = activities.filter((instanceActivity) => {
         return (
-            (filtreCategorie === "" || activity.category === filtreCategorie) &&
-            (filtreNiveau === "" || activity.level === filtreNiveau) &&
-            (filtreAge === "" || parseInt(activity.requiredAge) === parseInt(filtreAge)) &&
-            (filtreDebut === "" || activity.startDate === filtreDebut) &&
-            (filtreFin === "" || activity.endDate === filtreFin)
+            (filtreCategorie === "" || instanceActivity.sub_activity.activity.sub_category.categories[0].name === filtreCategorie) &&
+            (filtreNiveau === "" || instanceActivity.level === filtreNiveau) &&
+            (filtreAge === "" || parseInt(instanceActivity.requiredAge) === parseInt(filtreAge)) &&
+            (filtreDebut === "" || instanceActivity.startDate === filtreDebut) &&
+            (filtreFin === "" || instanceActivity.endDate === filtreFin)
         );
     });
 
@@ -103,37 +104,37 @@ const Activite = () => {
                 </div>
             )}
 
-            {filteredActivities.map((activity) => (
-                <div key={activity.id} className="activity-card">
-                    <h3>{activity.sub_activity.activity.name}</h3>
-                    <p><strong>Date début:</strong> {activity.startDate} | <strong>Date fin:</strong> {activity.endDate}</p>
-                    <p><strong>Places restantes:</strong> {activity.remainingPlaces}</p>
-                    <button className="primary-button" onClick={() => toggleDetails(activity.id)}>Consulter</button>
+            {filteredActivities.map((instanceActivity) => (
+                <div key={instanceActivity.id} className="activity-card">
+                    <h3>{instanceActivity.sub_activity.activity.sub_category.categories[0].name}</h3>
+                    <p><strong>Date début:</strong> {instanceActivity.startDate} | <strong>Date fin:</strong> {instanceActivity.endDate}</p>
+                    <p><strong>Places restantes:</strong> {instanceActivity.remainingPlaces}</p>
+                    <button className="primary-button" onClick={() => toggleDetails(instanceActivity.id)}>Consulter</button>
 
-                    {expandedActivity === activity.id && (
+                    {expandedActivity === instanceActivity.id && (
                         <div className="activity-details">
-                            <p><strong>Description:</strong> {activity.description}</p>
-                            <p><strong>Fournisseur:</strong> {activity.provider}</p>
-                            <p><strong>Matériel requis:</strong> {activity.requiredEquipment}</p>
-                            <p><strong>Niveau:</strong> {activity.level}</p>
+                            <p><strong>Description:</strong> {instanceActivity.description}</p>
+                            <p><strong>Fournisseur:</strong> {instanceActivity.provider}</p>
+                            <p><strong>Matériel requis:</strong> {instanceActivity.requiredEquipment}</p>
+                            <p><strong>Niveau:</strong> {instanceActivity.level}</p>
                             <div className="map-container">
                                 <iframe
                                     title="Google Map"
-                                    src={`https://www.google.com/maps?q=${activity.coordinates?.lat},${activity.coordinates?.lng}&z=15&output=embed`}
+                                    src={`https://www.google.com/maps?q=${instanceActivity.coordinates?.lat},${instanceActivity.coordinates?.lng}&z=15&output=embed`}
                                     width="100%"
                                     height="200"
                                     style={{ border: "0" }}
                                     allowFullScreen
                                     loading="lazy"
                                 ></iframe>
-                                <p>{activity.address}</p>
+                                <p>{instanceActivity.address}</p>
                             </div>
-                            <p><strong>Âge requis:</strong> {activity.requiredAge}</p>
-                            {activity.children && (
+                            <p><strong>Âge requis:</strong> {instanceActivity.requiredAge}</p>
+                            {instanceActivity.children && (
                                 <>
                                     <p><strong>Choisissez un enfant:</strong></p>
                                     <select className="child-select">
-                                        {activity.children.map((child) => (
+                                        {instanceActivity.children.map((child) => (
                                             <option key={child.id} value={child.id}>
                                                 {child.name} ({child.age} ans)
                                             </option>
@@ -143,15 +144,15 @@ const Activite = () => {
                             )}
                             <div className="button-group">
                                 <button className="success-button">S'inscrire</button>
-                                <button className="danger-button" onClick={() => toggleDetails(activity.id)}>Fermer</button>
-                                <button className="warning-button" onClick={() => setShowAvis(activity.id)}>Avis</button>
+                                <button className="danger-button" onClick={() => toggleDetails(instanceActivity.id)}>Fermer</button>
+                                <button className="warning-button" onClick={() => setShowAvis(instanceActivity.id)}>Avis</button>
                             </div>
                         </div>
                     )}
 
-                    {showAvis === activity.id && (
+                    {showAvis === instanceActivity.id && (
                         <div className="avis-section">
-                            <h3>Laisser un avis pour l'activité : {activity.name}</h3>
+                            <h3>Laisser un avis pour l'activité : {instanceActivity.name}</h3>
                             <Etoiles note={note} setNote={setNote} />
                             <textarea
                                 value={commentaire}
@@ -161,14 +162,14 @@ const Activite = () => {
                                 className="commentaire-textarea"
                             />
                             <div className="button-group">
-                                <button className="success-button" onClick={() => ajouterAvis(activity.id)}>Envoyer</button>
+                                <button className="success-button" onClick={() => ajouterAvis(instanceActivity.id)}>Envoyer</button>
                                 <button className="gray-button" onClick={() => setShowAvis(null)}>Fermer</button>
                             </div>
                             <div className="avis-liste">
                                 <h4>Avis existants :</h4>
-                                {(avisParActivite[activity.id] || []).length === 0
+                                {(avisParActivite[instanceActivity.id] || []).length === 0
                                     ? <p>Aucun avis pour cette activité.</p>
-                                    : avisParActivite[activity.id].map((avis, index) => (
+                                    : avisParActivite[instanceActivity.id].map((avis, index) => (
                                         <div key={index} className="avis-item">
                                             <div>{"★".repeat(avis.note) + "☆".repeat(5 - avis.note)}</div>
                                             <p>{avis.commentaire}</p>

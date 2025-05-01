@@ -51,7 +51,7 @@ class Activity extends Model
 		return $this->belongsTo(Provider::class);
 	}
 
-	public function sub_category()
+	public function subCategory()
 	{
 		return $this->belongsTo(SubCategory::class);
 	}

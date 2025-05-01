@@ -14,6 +14,8 @@ class ActivityResource extends JsonResource
             'description' => $this->description,
             'provider_id' => $this->provider_id,
             'sub_category_id' => $this->sub_category_id,
+            'sub_category' => new SubCategoryResource($this->whenLoaded('subCategory')),
+
         ];
     }
 }
