@@ -25,7 +25,7 @@ const Activite = () => {
     useEffect(() => {
         axios.get("/api/instance_activities")
             .then((response) => {
-                console.log(response.data.data);
+                console.log("Données reçues :", response.data);
                 setActivities(response.data.data);
             })
             .catch((error) => {
@@ -33,7 +33,12 @@ const Activite = () => {
             });
     }, []);
 
+    useEffect(() => {
+        console.log("expandedActivity actuel :", expandedActivity);
+    }, [expandedActivity]);
+
     const toggleDetails = (id) => {
+        console.log("Activité cliquée :", id);
         setExpandedActivity(expandedActivity === id ? null : id);
     };
 
@@ -104,82 +109,87 @@ const Activite = () => {
                 </div>
             )}
 
-            {filteredActivities.map((instanceActivity) => (
-                <div key={instanceActivity.id} className="activity-card">
-                    <h3>{instanceActivity.sub_activity.activity.sub_category.category.name}</h3>
-                    <p><strong>Date début:</strong> {instanceActivity.startDate} | <strong>Date fin:</strong> {instanceActivity.endDate}</p>
-                    <p><strong>Places restantes:</strong> {instanceActivity.remainingPlaces}</p>
-                    <button className="primary-button" onClick={() => toggleDetails(instanceActivity.id)}>Consulter</button>
+            {filteredActivities.map((instanceActivity) => {
+                console.log("ID activité :", instanceActivity.id);
+                return (
+                    <div key={instanceActivity.id} className="activity-card">
+                        <h3>{instanceActivity.sub_activity.activity.sub_category.category.name}</h3>
+                        <p><strong>Date début:</strong> {instanceActivity.start} | <strong>Date fin:</strong> {instanceActivity.end}</p>
+                        <p><strong>Places restantes:</strong> {instanceActivity.places - instanceActivity.nb_inscription }</p>
+                        <button className="primary-button" onClick={() => toggleDetails(instanceActivity.id)}>Consulter</button>
 
-                    {expandedActivity === instanceActivity.id && (
-                        <div className="activity-details">
-                            <p><strong>Description:</strong> {instanceActivity.description}</p>
-                            <p><strong>Fournisseur:</strong> {instanceActivity.provider}</p>
-                            <p><strong>Matériel requis:</strong> {instanceActivity.requiredEquipment}</p>
-                            <p><strong>Niveau:</strong> {instanceActivity.level}</p>
-                            <div className="map-container">
-                                <iframe
-                                    title="Google Map"
-                                    src={`https://www.google.com/maps?q=${instanceActivity.coordinates?.lat},${instanceActivity.coordinates?.lng}&z=15&output=embed`}
-                                    width="100%"
-                                    height="200"
-                                    style={{ border: "0" }}
-                                    allowFullScreen
-                                    loading="lazy"
-                                ></iframe>
-                                <p>{instanceActivity.address}</p>
-                            </div>
-                            <p><strong>Âge requis:</strong> {instanceActivity.requiredAge}</p>
-                            {instanceActivity.children && (
-                                <>
-                                    <p><strong>Choisissez un enfant:</strong></p>
-                                    <select className="child-select">
-                                        {instanceActivity.children.map((child) => (
-                                            <option key={child.id} value={child.id}>
-                                                {child.name} ({child.age} ans)
-                                            </option>
+                        {expandedActivity === instanceActivity.id && (
+                            <>
+                                {console.log("Affichage des détails pour :", instanceActivity.id)}
+                                <div className="activity-details">
+                                    <p><strong>Description:</strong> {instanceActivity.sub_activity.description}</p>
+                                    <p><strong>Matériel requis:</strong> {instanceActivity.sub_activity.material}</p>
+                                    <p><strong>Niveau:</strong> {instanceActivity.sub_activity.level}</p>
+                                    <div className="map-container">
+                                        <iframe
+                                            title="Google Map"
+                                            width="100%"
+                                            height="200"
+                                            style={{ border: "0" }}
+                                            allowFullScreen
+                                            loading="lazy"
+                                        ></iframe>
+                                        <p>{instanceActivity.address.address_description}</p>
+                                    </div>
+                                    <p><strong>Âge requis:</strong></p>
+                                    {instanceActivity.kid && (
+                                        <>
+                                            <p><strong>Choisissez un enfant:</strong></p>
+                                            <select className="child-select">
+                                                {instanceActivity.kid.map((child) => (
+                                                    <option key={child.id} value={child.id}>
+                                                        {child.name} ({child.age} ans)
+                                                    </option>
+                                                ))}
+                                            </select>
+                                        </>
+                                    )}
+                                    <div className="button-group">
+                                        <button className="success-button">S'inscrire</button>
+                                        <button className="danger-button" onClick={() => toggleDetails(instanceActivity.id)}>Fermer</button>
+                                        <button className="warning-button" onClick={() => setShowAvis(instanceActivity.id)}>Avis</button>
+                                    </div>
+                                </div>
+                            </>
+                        )}
+
+                        {showAvis === instanceActivity.id && (
+                            <div className="avis-section">
+                                <h3>Laisser un avis pour l'activité : {instanceActivity.sub_activity.name}</h3>
+                                <Etoiles note={note} setNote={setNote} />
+                                <textarea
+                                    value={commentaire}
+                                    onChange={(e) => setCommentaire(e.target.value)}
+                                    placeholder="Écrivez votre commentaire ici..."
+                                    rows="4"
+                                    className="commentaire-textarea"
+                                />
+                                <div className="button-group">
+                                    <button className="success-button" onClick={() => ajouterAvis(instanceActivity.id)}>Envoyer</button>
+                                    <button className="gray-button" onClick={() => setShowAvis(null)}>Fermer</button>
+                                </div>
+                                <div className="avis-liste">
+                                    <h4>Avis existants :</h4>
+                                    {(avisParActivite[instanceActivity.id] || []).length === 0
+                                        ? <p>Aucun avis pour cette activité.</p>
+                                        : avisParActivite[instanceActivity.id].map((avis, index) => (
+                                            <div key={index} className="avis-item">
+                                                <div>{"★".repeat(avis.note) + "☆".repeat(5 - avis.note)}</div>
+                                                <p>{avis.commentaire}</p>
+                                            </div>
                                         ))}
-                                    </select>
-                                </>
-                            )}
-                            <div className="button-group">
-                                <button className="success-button">S'inscrire</button>
-                                <button className="danger-button" onClick={() => toggleDetails(instanceActivity.id)}>Fermer</button>
-                                <button className="warning-button" onClick={() => setShowAvis(instanceActivity.id)}>Avis</button>
+                                </div>
                             </div>
-                        </div>
-                    )}
+                        )}
+                    </div>
+                );
+            })}
 
-                    {showAvis === instanceActivity.id && (
-                        <div className="avis-section">
-                            <h3>Laisser un avis pour l'activité : {instanceActivity.name}</h3>
-                            <Etoiles note={note} setNote={setNote} />
-                            <textarea
-                                value={commentaire}
-                                onChange={(e) => setCommentaire(e.target.value)}
-                                placeholder="Écrivez votre commentaire ici..."
-                                rows="4"
-                                className="commentaire-textarea"
-                            />
-                            <div className="button-group">
-                                <button className="success-button" onClick={() => ajouterAvis(instanceActivity.id)}>Envoyer</button>
-                                <button className="gray-button" onClick={() => setShowAvis(null)}>Fermer</button>
-                            </div>
-                            <div className="avis-liste">
-                                <h4>Avis existants :</h4>
-                                {(avisParActivite[instanceActivity.id] || []).length === 0
-                                    ? <p>Aucun avis pour cette activité.</p>
-                                    : avisParActivite[instanceActivity.id].map((avis, index) => (
-                                        <div key={index} className="avis-item">
-                                            <div>{"★".repeat(avis.note) + "☆".repeat(5 - avis.note)}</div>
-                                            <p>{avis.commentaire}</p>
-                                        </div>
-                                    ))}
-                            </div>
-                        </div>
-                    )}
-                </div>
-            ))}
             {filteredActivities.length === 0 && <p>Aucune activité ne correspond aux filtres.</p>}
         </div>
     );
