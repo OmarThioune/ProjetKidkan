@@ -229,7 +229,7 @@ const Ajouter = () => {
             <ul className="ajouter-list">
                 {activites.map((activite, index) => (
                     <li key={index} className="ajouter-list-item">
-                        <span>{activite.nomActivite || `Activité #${activite.id}`}</span>
+                        <span>{activite.sousCategorie || `Activité #${activite.id}`}</span>
                         <div className="ajouter-list-actions">
                             <button onClick={() => handleView(activite.id)} className="ajouter-btn blue">Voir</button>
                             <button onClick={() => setActivites(activites.filter((_, i) => i !== index))} className="ajouter-btn red">Supprimer</button>
