@@ -52,6 +52,7 @@ const Accueil = () => {
                     <li style={{ margin: '0 15px' }}><a href="/apropos" style={{ textDecoration: 'none', color: '#333' }}>À propos</a></li>
                     <li style={{ margin: '0 15px' }}><a href="/login" style={{ textDecoration: 'none', color: '#333' }}>Connexion</a></li>
                     <li style={{ margin: '0 15px' }}><a href="/instance" style={{ textDecoration: 'none', color: '#333' }}>Instance</a></li>
+                    <li style={{ margin: '0 15px' }}><a href="/sub" style={{ textDecoration: 'none', color: '#333' }}>Sub</a></li>
 
                 </ul>
             </nav>
