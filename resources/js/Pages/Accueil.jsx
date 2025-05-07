@@ -48,6 +48,7 @@ const Accueil = () => {
                     <li style={{ margin: '0 15px' }}><a href="/profile" style={{ textDecoration: 'none', color: '#333' }}>Authentification</a></li>
                     <li style={{ margin: '0 15px' }}><a href="/activite" style={{ textDecoration: 'none', color: '#333' }}>Activité</a></li>
                     <li style={{ margin: '0 15px' }}><a href="/ajouter" style={{ textDecoration: 'none', color: '#333' }}>Ajouter</a></li>
+                    <li style={{ margin: '0 15px' }}><a href="/ajouterActivite" style={{ textDecoration: 'none', color: '#333' }}>Ajouter activite</a></li>
                     <li style={{ margin: '0 15px' }}><a href="/apropos" style={{ textDecoration: 'none', color: '#333' }}>À propos</a></li>
                     <li style={{ margin: '0 15px' }}><a href="/login" style={{ textDecoration: 'none', color: '#333' }}>Connexion</a></li>
                     <li style={{ margin: '0 15px' }}><a href="/instance" style={{ textDecoration: 'none', color: '#333' }}>Instance</a></li>

@@ -15,6 +15,7 @@ Route::get('/recherche', fn () => Inertia::render('Recherche'))->name('recherche
 Route::get('/apropos', fn () => Inertia::render('APropos'))->name('apropos');
 Route::get('/categorie', fn () => Inertia::render('Categorie'))->name('categorie');
 Route::get('/ajouter', fn () => Inertia::render('Ajouter'))->name('ajouter');
+Route::get('/ajouterActivite', fn () => Inertia::render('AjouterActivite'))->name('ajouterActivite');
 Route::get('/activite', fn () => Inertia::render('Activite'))->name('activite');
 Route::get('/instance', fn () => Inertia::render('Instance'))->name('instance');
 
