@@ -16,6 +16,7 @@ Route::get('/apropos', fn () => Inertia::render('APropos'))->name('apropos');
 Route::get('/categorie', fn () => Inertia::render('Categorie'))->name('categorie');
 Route::get('/ajouter', fn () => Inertia::render('Ajouter'))->name('ajouter');
 Route::get('/activite', fn () => Inertia::render('Activite'))->name('activite');
+Route::get('/instance', fn () => Inertia::render('Instance'))->name('instance');
 
 // 🔹 Dashboard protégé (déjà en place)
 Route::get('/dashboard', function () {
