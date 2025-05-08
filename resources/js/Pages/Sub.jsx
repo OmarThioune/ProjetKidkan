@@ -19,7 +19,7 @@ export default function Sub() {
 
   useEffect(() => {
     // Charger les catégories
-    axios.get("/api/sub_activities")
+    axios.get("/api/sub_category")
       .then(res => setCategories(res.data.data))
       .catch(err => console.error("Erreur lors du chargement des catégories", err));
 
@@ -119,7 +119,7 @@ export default function Sub() {
         </div>
 
         <div className="flex flex-col md:col-span-2">
-          <label htmlFor="activity_id" className="mb-1 text-sm font-medium text-gray-600">Catégorie</label>
+          <label htmlFor="activity_id" className="mb-1 text-sm font-medium text-gray-600">sous-catégorie</label>
           <select
             id="activity_id"
             name="activity_id"
@@ -127,7 +127,7 @@ export default function Sub() {
             onChange={handleChange}
             className="border rounded-lg px-3 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
           >
-            <option value="">-- Sélectionner une catégorie --</option>
+            <option value="">-- Sélectionner une sous-catégorie --</option>
             {categories.map((cat) => (
               <option key={cat.id} value={cat.id}>{cat.name}</option>
             ))}

@@ -19,6 +19,7 @@ const Activite = () => {
     const [commentaire, setCommentaire] = useState("");
     const [note, setNote] = useState(0);
     const [avisParActivite, setAvisParActivite] = useState({});
+    const [Kids, setKids] = useState([]);
 
     useEffect(() => {
         axios.get("/api/instance_activities")
@@ -28,6 +29,16 @@ const Activite = () => {
             })
             .catch((error) => {
                 console.error("Erreur lors du chargement des activités:", error);
+            });
+
+
+        axios.get("/api/kids")
+            .then((response) => {
+                console.log("Données reçues :", response.data);
+                setKids(response.data.data);
+            })
+            .catch((error) => {
+                console.error("Erreur lors du chargement des enfants:", error);
             });
     }, []);
 
@@ -134,22 +145,19 @@ const Activite = () => {
                             <p><strong>Age minimum:</strong> {instanceActivity.sub_activity.min_Age}</p>
                             <p><strong>Age maximum:</strong> {instanceActivity.sub_activity.max_Age}</p>
                             <p><strong>Niveau:</strong> {instanceActivity.sub_activity.level}</p>
+                            <p><strong>Prix:</strong> {instanceActivity.pricings.price}</p>
                             <div className="map-container">
                                 <iframe title="Google Map" width="100%" height="200" style={{ border: "0" }} allowFullScreen loading="lazy"></iframe>
                                 <p>{instanceActivity.address.address_description}</p>
                             </div>
-                            {instanceActivity.kid && (
-                                <>
-                                    <p><strong>Choisissez un enfant:</strong></p>
-                                    <select className="child-select">
-                                        {instanceActivity.kid.map((child) => (
-                                            <option key={child.id} value={child.id}>
-                                                {child.name} ({child.age} ans)
-                                            </option>
-                                        ))}
-                                    </select>
-                                </>
-                            )}
+                            <p><strong>Choisissez un enfant :</strong></p>
+                            <select className="child-select">
+                                {Kids.map((child) => (
+                                    <option key={child.id} value={child.id}>
+                                        {child.name} ({child.age} ans)
+                                    </option>
+                                ))}
+                            </select>
                             <div className="button-group">
                                 <button className="success-button">S'inscrire</button>
                                 <button className="danger-button" onClick={() => toggleDetails(instanceActivity.id)}>Fermer</button>
