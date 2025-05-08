@@ -20,21 +20,19 @@ const Activite = () => {
     const [note, setNote] = useState(0);
     const [avisParActivite, setAvisParActivite] = useState({});
     const [Kids, setKids] = useState([]);
+    const [selectedKids, setSelectedKids] = useState({});
 
     useEffect(() => {
         axios.get("/api/instance_activities")
             .then((response) => {
-                console.log("Données reçues :", response.data);
                 setActivities(response.data.data);
             })
             .catch((error) => {
                 console.error("Erreur lors du chargement des activités:", error);
             });
 
-
         axios.get("/api/kids")
             .then((response) => {
-                console.log("Données reçues :", response.data);
                 setKids(response.data.data);
             })
             .catch((error) => {
@@ -58,6 +56,30 @@ const Activite = () => {
         }));
         setCommentaire("");
         setNote(0);
+    };
+
+    const inscrireEnfant = (idActivite) => {
+        const kidId = selectedKids[idActivite];
+        if (!kidId) {
+            alert("Veuillez sélectionner un enfant avant de vous inscrire.");
+            return;
+        }
+
+        const payload = {
+            favorite: "Test",
+            status: "En cours",
+            kid_id: kidId,
+            instance_activity_id: idActivite
+        };
+
+        axios.post("/api/subscription_kids", payload)
+            .then((response) => {
+                alert("Inscription réussie !");
+            })
+            .catch((error) => {
+                console.error("Erreur lors de l'inscription :", error);
+                alert("Échec de l'inscription.");
+            });
     };
 
     const Etoiles = ({ note, setNote }) => (
@@ -101,33 +123,10 @@ const Activite = () => {
                         {niveaux.map((niveau) => <option key={niveau} value={niveau}>{niveau}</option>)}
                     </select>
 
-                    <input
-                        type="number"
-                        placeholder="Âge minimum"
-                        value={filtreAgeMin}
-                        onChange={(e) => setFiltreAgeMin(e.target.value)}
-                    />
-
-                    <input
-                        type="number"
-                        placeholder="Âge maximum"
-                        value={filtreAgeMax}
-                        onChange={(e) => setFiltreAgeMax(e.target.value)}
-                    />
-
-                    <input
-                        type="date"
-                        placeholder="Date début min"
-                        value={filtreDateDebut}
-                        onChange={(e) => setFiltreDateDebut(e.target.value)}
-                    />
-
-                    <input
-                        type="date"
-                        placeholder="Date fin max"
-                        value={filtreDateFin}
-                        onChange={(e) => setFiltreDateFin(e.target.value)}
-                    />
+                    <input type="number" placeholder="Âge minimum" value={filtreAgeMin} onChange={(e) => setFiltreAgeMin(e.target.value)} />
+                    <input type="number" placeholder="Âge maximum" value={filtreAgeMax} onChange={(e) => setFiltreAgeMax(e.target.value)} />
+                    <input type="date" value={filtreDateDebut} onChange={(e) => setFiltreDateDebut(e.target.value)} />
+                    <input type="date" value={filtreDateFin} onChange={(e) => setFiltreDateFin(e.target.value)} />
                 </div>
             )}
 
@@ -151,7 +150,17 @@ const Activite = () => {
                                 <p>{instanceActivity.address.address_description}</p>
                             </div>
                             <p><strong>Choisissez un enfant :</strong></p>
-                            <select className="child-select">
+                            <select
+                                className="child-select"
+                                value={selectedKids[instanceActivity.id] || ""}
+                                onChange={(e) =>
+                                    setSelectedKids((prev) => ({
+                                        ...prev,
+                                        [instanceActivity.id]: e.target.value,
+                                    }))
+                                }
+                            >
+                                <option value="">-- Sélectionner --</option>
                                 {Kids.map((child) => (
                                     <option key={child.id} value={child.id}>
                                         {child.name} ({child.age} ans)
@@ -159,7 +168,7 @@ const Activite = () => {
                                 ))}
                             </select>
                             <div className="button-group">
-                                <button className="success-button">S'inscrire</button>
+                                <button className="success-button" onClick={() => inscrireEnfant(instanceActivity.id)}>S'inscrire</button>
                                 <button className="danger-button" onClick={() => toggleDetails(instanceActivity.id)}>Fermer</button>
                                 <button className="warning-button" onClick={() => setShowAvis(instanceActivity.id)}>Avis</button>
                             </div>
