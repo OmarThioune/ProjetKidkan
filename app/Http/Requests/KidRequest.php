@@ -14,6 +14,7 @@ class KidRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'id'=>'integer',
             'user_id' => 'integer',
             'name' => 'string|max:255',
             'age' => 'integer',

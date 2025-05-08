@@ -14,6 +14,7 @@ class ActivityRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'id'=>'integer',
             'name' => 'string|max:255',
             'description' => 'string',
             'provider_id' => 'integer',

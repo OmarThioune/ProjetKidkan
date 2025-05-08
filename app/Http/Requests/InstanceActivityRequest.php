@@ -14,6 +14,7 @@ class InstanceActivityRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'id'=>'integer',
             'start' => 'date',
             'end' => 'date',
             'deadline' => 'date',

@@ -14,6 +14,7 @@ class UserRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'id'=>'integer',
             'name' => 'string|max:255',
             'lastname' => 'string|max:255',
             'address' => 'string|max:255',

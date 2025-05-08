@@ -2,12 +2,11 @@ import React, { useState , useEffect } from "react";
 import axios from "axios";
 import './AjouterActivite.css';
 const AjouterActivite = () => {
-    const [filtreCategorie, setFiltreCategorie] = useState("");
     const [formData, setFormData] = useState({
         name: "",
         description: "",
-        provider_id: "1",
-        sub_category_id: "1",
+        provider_id: "",
+        sub_category_id: "",
        
     });
 
@@ -16,27 +15,31 @@ const AjouterActivite = () => {
     const [subCategories, setSubCategories] = useState([]);
 
     useEffect(() => {
-        // Fetch providers and subcategories (if not already available)
-        fetchProvidersAndCategories();
+        fetchActivites();
+        fetchProviders();
+        fetchSubCategories();
     }, []);
-
-    const fetchProvidersAndCategories = async () => {
+    
+    const fetchProviders = async () => {
         try {
-            const [providersRes, subCategoriesRes] = await Promise.all([
-                axios.get("/api/providers"),
-                axios.get("/api/sub_categories"),
-            ]);
-            setProviders(providersRes.data.data);
-            setSubCategories(subCategoriesRes.data.data);
-        } catch (error) {
-            console.error("Erreur lors de la récupération des données:", error);
+            const response = await axios.get("/api/providers");
+            setProviders(response.data.data);
+            console.log(response.data.data);
+        } catch (err) {
+            console.error("Erreur chargement providers:", err);
         }
     };
-
-
-    useEffect(() => {
-        fetchActivites();
-    }, []);
+    
+    const fetchSubCategories = async () => {
+        try {
+            const response = await axios.get("/api/sub_categories");
+            setSubCategories(response.data.data);
+            console.log(response.data.data);
+        } catch (err) {
+            console.error("Erreur chargement sub-categories:", err);
+        }
+    };
+    
 
     const fetchActivites = async () => {
         try {
@@ -66,21 +69,34 @@ const AjouterActivite = () => {
         }
         return true;
     };
+    const handleDelete = async (id) => {
+        if (!window.confirm("Voulez-vous vraiment supprimer cette activité ?")) return;
+    
+        try {
+            await axios.delete(`/api/activities/${id}`);
+            // Remove from local state after successful deletion
+            setActivites((prev) => prev.filter((activity) => activity.id !== id));
+            alert("Activité supprimée avec succès !");
+        } catch (error) {
+            console.error("Erreur lors de la suppression :", error);
+            alert("Erreur lors de la suppression de l'activité.");
+        }
+    };
 
     const handleAdd = async () => {
         if (!validerChamps()) return;
 
         try {
-
+            console.log(formData); 
             // 3. Ajouter l'activité
             const activiteRes = await axios.post("/api/activities", {
                 name: formData.name,
                 description: formData.description,
-                provider_id: 1, // À adapter selon le contexte
-                sub_category_id: 1
+                provider_id: formData.provider_id, // À adapter selon le contexte
+                sub_category_id: formData.sub_category_id
             });
             const activiteId = activiteRes.data.id;
-
+            
             // 8. Ajouter dans le state local
             //setActivites((prev) => [...prev, { id: activiteId, name: formData.name }]);
             fetchActivites();
@@ -96,8 +112,8 @@ const AjouterActivite = () => {
         setFormData({
             name: "",
             description: "",
-            provider_id: "1",
-            sub_category_id: "1",
+            provider_id: 0,
+            sub_category_id: 0,
         });
     };
 
@@ -115,26 +131,41 @@ const AjouterActivite = () => {
         <div className="ajouter-container">
             <h1>Ajouter une Activité</h1>
             <form className="ajouter-form">
-                <select name="provider_id" value={formData.provider_id} onChange={handleChange} className="ajouter-input">
-                    {providers.map(provider => (
-                        <option key={provider.id} value={provider.id}>
+                <select
+                    name="provider_id"
+                    value={formData.provider_id}
+                    onChange={handleChange}
+                    className="ajouter-input"
+                >
+                    <option value="">-- Choisir un fournisseur --</option>
+                    {providers.map((provider, index) => (
+                        <option key={provider.id || index} value={provider.id}>
                             {provider.name}
                         </option>
                     ))}
                 </select>
 
-                <select name="sub_category_id" value={formData.sub_category_id} onChange={handleChange} className="ajouter-input">
-                    {subCategories.map(subCategory => (
-                        <option key={subCategory.id} value={subCategory.id}>
-                            {subCategory.name}
+                <select
+                    name="sub_category_id"
+                    value={formData.sub_category_id}
+                    onChange={handleChange}
+                    className="ajouter-input"
+                >
+                    <option value="">-- Choisir une sous-catégorie --</option>
+                    {subCategories.map((cat, index) => (
+                        <option key={cat.id || index} value={cat.id}>
+                            {cat.name} 
                         </option>
+                        
                     ))}
+                   
                 </select>
+
                 <input
                     type="text"
                     name="name"
                     placeholder="Nom de l'activité"
-                    value={formData.name}
+                    value={formData.id}
                     onChange={handleChange}
                     className="ajouter-input"
                 />
@@ -159,7 +190,9 @@ const AjouterActivite = () => {
                         <span>{activite.name || `Activité #${activite.id}`}</span>
                         <div className="ajouter-list-actions">
                             <button onClick={() => handleView(activite.id)} className="ajouter-btn blue">Voir</button>
-                            <button onClick={() => setActivites(activities.filter((_, i) => i !== index))} className="ajouter-btn red">Supprimer</button>
+                            <button onClick={() => handleDelete(activite.id)} className="ajouter-btn red">
+                                Supprimer
+                            </button>
                         </div>
                     </li>
                 ))}

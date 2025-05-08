@@ -14,6 +14,7 @@ class PricingRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'id'=>'integer',
             'price' => 'string|max:255',
             'type' => 'string|max:255',
             'instance_activity_id' => 'integer',

@@ -14,6 +14,7 @@ class SubCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'id'=> 'integer',
             'name' => 'string|max:255',
             'description' => 'string',
             'category_id' => 'integer',

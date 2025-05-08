@@ -14,6 +14,7 @@ class AddressRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'id'=>'integer',
             'civil_number' => 'string|max:255',
             'street_name' => 'string|max:255',
             'postal_code' => 'string|max:255',

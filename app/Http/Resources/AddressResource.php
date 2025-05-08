@@ -10,6 +10,7 @@ class AddressResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id'=>$this->id,
             'civil_number' => $this->civil_number,
             'street_name' => $this->street_name,
             'postal_code' => $this->postal_code,

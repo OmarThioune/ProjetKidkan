@@ -10,6 +10,7 @@ class SubActivityResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id'=>$this->id,
             'name' => $this->name,
             'min_Age' => $this->min_Age,
             'max_Age' => $this->max_Age,

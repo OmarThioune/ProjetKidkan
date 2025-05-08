@@ -14,6 +14,7 @@ class WaitingListRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'id'=>'integer',
             'date' => 'date',
             'kid_id' => 'integer',
             'instance_activity_id' => 'integer',

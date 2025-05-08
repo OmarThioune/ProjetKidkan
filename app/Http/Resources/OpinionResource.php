@@ -10,6 +10,7 @@ class OpinionResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id'=>$this->id,
             'activity_id' => $this->activity_id,
             'user_id' => $this->user_id,
             'comment' => $this->comment,

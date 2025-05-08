@@ -14,6 +14,7 @@ class SubscriptionKidRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'id'=>'integer',
             'kid_id' => 'integer',
             'instance_activity_id' => 'integer',
             'favorite' => 'string|max:255',

@@ -14,6 +14,7 @@ class ActivityCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'id'=>'integer',
             'activity_id' => 'integer',
             'category_id' => 'integer',
         ];
