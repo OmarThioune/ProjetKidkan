@@ -44,16 +44,15 @@ const Accueil = () => {
             <nav style={{ marginTop: '30px', backgroundColor: '#f8f9fa', padding: '10px 0' }}>
                 <ul style={{ listStyle: 'none', display: 'flex', justifyContent: 'center', padding: 0, margin: 0 }}>
                     <li style={{ margin: '0 15px' }}><a href="/accueil" style={{ textDecoration: 'none', color: '#333' }}>Accueil</a></li>
-                    <li style={{ margin: '0 15px' }}><a href="/recherche" style={{ textDecoration: 'none', color: '#333' }}>Profil</a></li>
-                    <li style={{ margin: '0 15px' }}><a href="/profile" style={{ textDecoration: 'none', color: '#333' }}>Authentification</a></li>
                     <li style={{ margin: '0 15px' }}><a href="/activite" style={{ textDecoration: 'none', color: '#333' }}>Activité</a></li>
                     <li style={{ margin: '0 15px' }}><a href="/ajouter" style={{ textDecoration: 'none', color: '#333' }}>Ajouter</a></li>
                     <li style={{ margin: '0 15px' }}><a href="/ajouterActivite" style={{ textDecoration: 'none', color: '#333' }}>Ajouter activite</a></li>
+                    <li style={{ margin: '0 15px' }}><a href="/sub" style={{ textDecoration: 'none', color: '#333' }}>Sub</a></li>
+                    <li style={{ margin: '0 15px' }}><a href="/instance" style={{ textDecoration: 'none', color: '#333' }}>Instance</a></li>
                     <li style={{ margin: '0 15px' }}><a href="/apropos" style={{ textDecoration: 'none', color: '#333' }}>À propos</a></li>
                     <li style={{ margin: '0 15px' }}><a href="/login" style={{ textDecoration: 'none', color: '#333' }}>Connexion</a></li>
-                    <li style={{ margin: '0 15px' }}><a href="/instance" style={{ textDecoration: 'none', color: '#333' }}>Instance</a></li>
-                    <li style={{ margin: '0 15px' }}><a href="/sub" style={{ textDecoration: 'none', color: '#333' }}>Sub</a></li>
-
+                    <li style={{ margin: '0 15px' }}><a href="/register" style={{ textDecoration: 'none', color: '#333' }}>Inscription</a></li>
+                    <li style={{ margin: '0 15px' }}><a href="/recherche" style={{ textDecoration: 'none', color: '#333' }}>Profil</a></li>
                 </ul>
             </nav>
 

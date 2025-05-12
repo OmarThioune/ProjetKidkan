@@ -104,7 +104,7 @@ const Activite = () => {
             (filtreDateFin === "" || endDate <= filtreDateFin)
         );
     });
-
+    
     return (
         <div className="container">
             <button className="toggle-filters-button" onClick={toggleFilters}>
@@ -130,81 +130,96 @@ const Activite = () => {
                 </div>
             )}
 
-            {filteredActivities.map((instanceActivity) => (
-                <div key={instanceActivity.id} className="activity-card">
-                    <h3>{instanceActivity.sub_activity.activity.sub_category.category.name}</h3>
-                    <p><strong>Date début:</strong> {instanceActivity.start} | <strong>Date fin:</strong> {instanceActivity.end}</p>
-                    <p><strong>Places restantes:</strong> {instanceActivity.places - instanceActivity.nb_inscription}</p>
-                    <button className="primary-button" onClick={() => toggleDetails(instanceActivity.id)}>Consulter</button>
+            {filteredActivities.map((instanceActivity) => {
+                const fullAddress = `${instanceActivity.address.civil_number}, ${instanceActivity.address.road}, ${instanceActivity.address.city}, ${instanceActivity.address.province}, ${instanceActivity.address.postal_code}, ${instanceActivity.address.country}`;
 
-                    {expandedActivity === instanceActivity.id && (
-                        <div className="activity-details">
-                            <p><strong>Description:</strong> {instanceActivity.sub_activity.description}</p>
-                            <p><strong>Matériel requis:</strong> {instanceActivity.sub_activity.material}</p>
-                            <p><strong>Age minimum:</strong> {instanceActivity.sub_activity.min_Age}</p>
-                            <p><strong>Age maximum:</strong> {instanceActivity.sub_activity.max_Age}</p>
-                            <p><strong>Niveau:</strong> {instanceActivity.sub_activity.level}</p>
-                            <p><strong>Prix:</strong> {instanceActivity.pricings.price}</p>
-                            <div className="map-container">
-                                <iframe title="Google Map" width="100%" height="200" style={{ border: "0" }} allowFullScreen loading="lazy"></iframe>
-                                <p>{instanceActivity.address.address_description}</p>
-                            </div>
-                            <p><strong>Choisissez un enfant :</strong></p>
-                            <select
-                                className="child-select"
-                                value={selectedKids[instanceActivity.id] || ""}
-                                onChange={(e) =>
-                                    setSelectedKids((prev) => ({
-                                        ...prev,
-                                        [instanceActivity.id]: e.target.value,
-                                    }))
-                                }
-                            >
-                                <option value="">-- Sélectionner --</option>
-                                {Kids.map((child) => (
-                                    <option key={child.id} value={child.id}>
-                                        {child.name} ({child.age} ans)
-                                    </option>
-                                ))}
-                            </select>
-                            <div className="button-group">
-                                <button className="success-button" onClick={() => inscrireEnfant(instanceActivity.id)}>S'inscrire</button>
-                                <button className="danger-button" onClick={() => toggleDetails(instanceActivity.id)}>Fermer</button>
-                                <button className="warning-button" onClick={() => setShowAvis(instanceActivity.id)}>Avis</button>
-                            </div>
-                        </div>
-                    )}
+                return (
+                    <div key={instanceActivity.id} className="activity-card">
+                        <h3>{instanceActivity.sub_activity.activity.sub_category.category.name}</h3>
+                        <p><strong>Date début:</strong> {instanceActivity.start} | <strong>Date fin:</strong> {instanceActivity.end}</p>
+                        <p><strong>Places restantes:</strong> {instanceActivity.places - instanceActivity.nb_inscription}</p>
+                        <button className="primary-button" onClick={() => toggleDetails(instanceActivity.id)}>Consulter</button>
 
-                    {showAvis === instanceActivity.id && (
-                        <div className="avis-section">
-                            <h3>Laisser un avis pour l'activité : {instanceActivity.sub_activity.name}</h3>
-                            <Etoiles note={note} setNote={setNote} />
-                            <textarea
-                                value={commentaire}
-                                onChange={(e) => setCommentaire(e.target.value)}
-                                placeholder="Écrivez votre commentaire ici..."
-                                rows="4"
-                                className="commentaire-textarea"
-                            />
-                            <div className="button-group">
-                                <button className="success-button" onClick={() => ajouterAvis(instanceActivity.id)}>Envoyer</button>
-                                <button className="gray-button" onClick={() => setShowAvis(null)}>Fermer</button>
-                            </div>
-                            <div className="avis-liste">
-                                <h4>Avis existants :</h4>
-                                {(avisParActivite[instanceActivity.id] || []).length === 0
-                                    ? <p>Aucun avis pour cette activité.</p>
-                                    : avisParActivite[instanceActivity.id].map((avis, index) => (
-                                        <div key={index} className="avis-item">
-                                            <div>{"★".repeat(avis.note) + "☆".repeat(5 - avis.note)}</div>
-                                            <p>{avis.commentaire}</p>
-                                        </div>
+                        {expandedActivity === instanceActivity.id && (
+                            <div className="activity-details">
+                                <p><strong>Description:</strong> {instanceActivity.sub_activity.description}</p>
+                                <p><strong>Matériel requis:</strong> {instanceActivity.sub_activity.material}</p>
+                                <p><strong>Age minimum:</strong> {instanceActivity.sub_activity.min_Age}</p>
+                                <p><strong>Age maximum:</strong> {instanceActivity.sub_activity.max_Age}</p>
+                                <p><strong>Niveau:</strong> {instanceActivity.sub_activity.level}</p>
+                                <p><strong>Prix:</strong> {instanceActivity.pricings.price}</p>
+
+                                <div className="map-container">
+                                    <iframe
+                                        title="Google Map"
+                                        width="100%"
+                                        height="200"
+                                        style={{ border: "0" }}
+                                        allowFullScreen
+                                        loading="lazy"
+                                        src={`https://www.google.com/maps?q=${encodeURIComponent(fullAddress)}&output=embed`}
+                                    ></iframe>
+                                    <p>{instanceActivity.address.address_description}</p>
+                                </div>
+
+                                <p><strong>Choisissez un enfant :</strong></p>
+                                <select
+                                    className="child-select"
+                                    value={selectedKids[instanceActivity.id] || ""}
+                                    onChange={(e) =>
+                                        setSelectedKids((prev) => ({
+                                            ...prev,
+                                            [instanceActivity.id]: e.target.value,
+                                        }))
+                                    }
+                                >
+                                    <option value="">-- Sélectionner --</option>
+                                    {Kids.map((child) => (
+                                        <option key={child.id} value={child.id}>
+                                            {child.name} ({child.age} ans)
+                                        </option>
                                     ))}
+                                </select>
+                                <div className="button-group">
+                                    <button className="success-button" onClick={() => inscrireEnfant(instanceActivity.id)}>S'inscrire</button>
+                                    <button className="danger-button" onClick={() => toggleDetails(instanceActivity.id)}>Fermer</button>
+                                    <button className="warning-button" onClick={() => setShowAvis(instanceActivity.id)}>Avis</button>
+                                </div>
                             </div>
-                        </div>
-                    )}
-                </div>
-            ))}
+                        )}
+
+
+{showAvis === instanceActivity.id && (
+                            <div className="avis-section">
+                                <h3>Laisser un avis pour l'activité : {instanceActivity.sub_activity.name}</h3>
+                                <Etoiles note={note} setNote={setNote} />
+                                <textarea
+                                    value={commentaire}
+                                    onChange={(e) => setCommentaire(e.target.value)}
+                                    placeholder="Écrivez votre commentaire ici..."
+                                    rows="4"
+                                    className="commentaire-textarea"
+                                />
+                                <div className="button-group">
+                                    <button className="success-button" onClick={() => ajouterAvis(instanceActivity.id)}>Envoyer</button>
+                                    <button className="gray-button" onClick={() => setShowAvis(null)}>Fermer</button>
+                                </div>
+                                <div className="avis-liste">
+                                    <h4>Avis existants :</h4>
+                                    {(avisParActivite[instanceActivity.id] || []).length === 0
+                                        ? <p>Aucun avis pour cette activité.</p>
+                                        : avisParActivite[instanceActivity.id].map((avis, index) => (
+                                            <div key={index} className="avis-item">
+                                                <div>{"★".repeat(avis.note) + "☆".repeat(5 - avis.note)}</div>
+                                                <p>{avis.commentaire}</p>
+                                            </div>
+                                        ))}
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                );
+            })}
 
             {filteredActivities.length === 0 && <p>Aucune activité ne correspond aux filtres.</p>}
         </div>
