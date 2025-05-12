@@ -2,7 +2,7 @@ import React from "react";
 import "./Accueil.css";
 
 const menuItems = [
-  { label: "Accueil", link: "/accueil" },
+  { label: "Accueil", link: "/" },
   { label: "Profil", link: "/recherche" },
   { label: "Authentification", link: "/profile" },
   { label: "Activité", link: "/activite" },
