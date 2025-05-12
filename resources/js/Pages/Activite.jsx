@@ -91,19 +91,26 @@ const Activite = () => {
     );
 
     const filteredActivities = activities.filter((instanceActivity) => {
-        const age = parseInt(instanceActivity.requiredAge);
+        const minAge = instanceActivity.sub_activity.min_Age; // Âge minimum de l'activité
+        const maxAge = instanceActivity.sub_activity.max_Age; // Âge maximum de l'activité
         const startDate = instanceActivity.start;
         const endDate = instanceActivity.end;
-
+    
+        // Vérifiez si les filtres d'âge sont valides avant de les comparer
+        const isAgeValid =
+            (filtreAgeMin === "" || minAge >= parseInt(filtreAgeMin)) && // L'âge minimum de l'activité doit être >= à filtreAgeMin
+            (filtreAgeMax === "" || maxAge >= parseInt(filtreAgeMin)); // L'âge maximum de l'activité doit être >= à filtreAgeMin
+    
         return (
             (filtreCategorie === "" || instanceActivity.sub_activity.activity.sub_category.category.name === filtreCategorie) &&
             (filtreNiveau === "" || instanceActivity.level === filtreNiveau) &&
-            (filtreAgeMin === "" || age >= parseInt(filtreAgeMin)) &&
-            (filtreAgeMax === "" || age <= parseInt(filtreAgeMax)) &&
+            isAgeValid && // Appliquez ici le filtre d'âge
             (filtreDateDebut === "" || startDate >= filtreDateDebut) &&
             (filtreDateFin === "" || endDate <= filtreDateFin)
         );
     });
+    
+    
     
     return (
         <div className="container">
