@@ -1,0 +1,78 @@
+/* Arrière-plan plein écran */
+.accueil-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: radial-gradient(circle at center, #002366, #ff0000);
+    font-family: "Segoe UI", sans-serif;
+  }
+  
+  /* Rectangle central */
+  .accueil-menu {
+    background-color: white;
+    border-radius: 25px;
+    padding: 40px 60px;
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    max-width: 500px;
+    width: 90%;
+    animation: fadeIn 1s ease-out;
+  }
+  
+  .accueil-title {
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: #002366;
+  }
+  
+  /* Liste des liens */
+  .accueil-liste {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .accueil-element {
+    margin: 10px 0;
+  }
+  
+  .accueil-element a {
+    text-decoration: none;
+    font-size: 18px;
+    color: #ff0000;
+    background-color: #002366;
+    padding: 10px 20px;
+    border-radius: 12px;
+    display: inline-block;
+    transition: transform 0.2s ease, background-color 0.3s ease;
+  }
+  
+  /* Effets dynamiques */
+  .accueil-element a:hover {
+    transform: scale(1.1);
+    background-color: #ff0000;
+    color: white;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* Animation d’entrée */
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+      transform: translateY(-40px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+/* Footer */
+.footer {
+    background-color: #e0f7fa;
+    text-align: center;
+    padding: 20px 0;
+    color: #333;
+    margin-top: auto;
+}

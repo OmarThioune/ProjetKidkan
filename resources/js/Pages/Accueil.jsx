@@ -1,32 +1,21 @@
-import React from 'react';
+import React from "react";
+import "./Accueil.css";
 
-const activities = [
-    { name: "Danse Hip-Hop", description: "Bouger en rythme avec énergie.", rating: 4.5 },
-    { name: "Cours de Piano", description: "Apprendre les bases du piano classique.", rating: 4.8 },
-    { name: "Atelier Peinture", description: "Exprime ta créativité avec des couleurs.", rating: 4.2 },
-    { name: "Football", description: "Jeu d'équipe et esprit sportif.", rating: 4.0 },
-    { name: "Natation", description: "Maîtriser l’eau tout en s’amusant.", rating: 4.6 },
-    { name: "Échecs", description: "Développer la stratégie et la logique.", rating: 4.7 },
-    { name: "Yoga Enfant", description: "Se relaxer et bouger en douceur.", rating: 4.3 },
-    { name: "Théâtre", description: "Jouer des rôles et améliorer sa confiance.", rating: 4.4 },
-    { name: "Cuisine Créative", description: "Faire des recettes amusantes et savoureuses.", rating: 4.1 },
-    { name: "Informatique", description: "Apprendre les bases du codage.", rating: 4.9 },
+const menuItems = [
+  { label: "Accueil", link: "/accueil" },
+  { label: "Profil", link: "/recherche" },
+  { label: "Authentification", link: "/profile" },
+  { label: "Activité", link: "/activite" },
+  { label: "Ajouter", link: "/ajouter" },
+  { label: "Ajouter Activité", link: "/ajouterActivite" },
+  { label: "À propos", link: "/apropos" },
+  { label: "Connexion", link: "/login" },
+  { label: "Instance", link: "/instance" },
+  { label: "Sub", link: "/sub" },
 ];
 
-const renderStars = (rating) => {
-    const fullStars = Math.floor(rating);
-    const halfStar = rating % 1 >= 0.5;
-    const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
-    return (
-        <>
-            {"★".repeat(fullStars)}
-            {halfStar && "☆"}
-            {"☆".repeat(emptyStars)}
-        </>
-    );
-};
-
 const Accueil = () => {
+
     return (
         <div style={{ textAlign: 'center', fontFamily: 'Arial, sans-serif' }}>
             <div style={{ marginTop: '50px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -119,6 +108,22 @@ const Accueil = () => {
             </footer>
         </div>
     );
+
+  return (
+    <div className="accueil-container">
+      <div className="accueil-menu">
+        <h1 className="accueil-title">Bienvenue sur KidKan</h1>
+        <ul className="accueil-liste">
+          {menuItems.map((item, index) => (
+            <li key={index} className="accueil-element">
+              <a href={item.link}>{item.label}</a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+>>>>>>> 777d553 (Modif)
 };
 
 export default Accueil;
