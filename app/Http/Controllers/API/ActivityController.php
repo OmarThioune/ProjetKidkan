@@ -13,7 +13,9 @@ class ActivityController extends Controller
 {
     public function index(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
-        return ActivityResource::collection(Activity::latest()->paginate(10));
+        return ActivityResource::collection(
+            Activity::with(['subCategory.category'])->latest()->paginate()
+        );
     }
 
     public function store(ActivityRequest $request): ActivityResource|\Illuminate\Http\JsonResponse
@@ -29,6 +31,8 @@ class ActivityController extends Controller
 
     public function show(Activity $activity): ActivityResource
     {
+        $activity->load(['subCategory.category']);
+
         return ActivityResource::make($activity);
     }
 

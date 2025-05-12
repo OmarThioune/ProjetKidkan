@@ -12,16 +12,16 @@ export default function Sub() {
     activity_id: "",
   });
 
-  const [categories, setCategories] = useState([]);
+  const [activities, setActivities] = useState([]);
   const [subActivities, setSubActivities] = useState([]);
   const [filteredSubActivities, setFilteredSubActivities] = useState([]);
   const [success, setSuccess] = useState(false);
 
   useEffect(() => {
     // Charger les catégories
-    axios.get("/api/sub_category")
-      .then(res => setCategories(res.data.data))
-      .catch(err => console.error("Erreur lors du chargement des catégories", err));
+    axios.get("/api/activities")
+      .then(res => setActivities(res.data.data))
+      .catch(err => console.error("Erreur lors du chargement des activités", err));
 
     // Charger les sous-activités
     axios.get("/api/sub_activities")
@@ -76,6 +76,7 @@ export default function Sub() {
 
   const handleFilter = (e) => {
     const query = e.target.value.toLowerCase();
+    console.log(query);
     setFilteredSubActivities(subActivities.filter(sub =>
       sub.name.toLowerCase().includes(query)
     ));
@@ -119,7 +120,7 @@ export default function Sub() {
         </div>
 
         <div className="flex flex-col md:col-span-2">
-          <label htmlFor="activity_id" className="mb-1 text-sm font-medium text-gray-600">sous-catégorie</label>
+          <label htmlFor="activity_id" className="mb-1 text-sm font-medium text-gray-600">Activité</label>
           <select
             id="activity_id"
             name="activity_id"
@@ -127,8 +128,8 @@ export default function Sub() {
             onChange={handleChange}
             className="border rounded-lg px-3 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
           >
-            <option value="">-- Sélectionner une sous-catégorie --</option>
-            {categories.map((cat) => (
+            <option value="">-- Sélectionner une activitée --</option>
+            {activities.map((cat) => (
               <option key={cat.id} value={cat.id}>{cat.name}</option>
             ))}
           </select>
@@ -186,7 +187,7 @@ export default function Sub() {
               <div>
                 <h3 className="font-semibold text-lg">{sub.name || 'Nom non disponible'}</h3>
                 <p className="text-sm text-gray-600">Niveau: {sub.level || 'Non spécifié'}</p>
-                <p className="text-sm text-gray-600">Catégorie: {sub.activity?.name || 'Non spécifiée'}</p>
+                <p className="text-sm text-gray-600">Catégorie: {sub.activity.sub_category.category.name || 'Non spécifiée'}</p>
               </div>
               <button
                 onClick={() => handleDelete(sub.id)}
