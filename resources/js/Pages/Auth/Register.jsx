@@ -11,6 +11,7 @@ export default function Register() {
         email: '',
         password: '',
         password_confirmation: '',
+        account_type: 0, // 0 = normal user, 1 = provider
     });
 
     const submit = (e) => {
@@ -101,6 +102,25 @@ export default function Register() {
                         className="mt-2"
                     />
                 </div>
+
+                {/* Account Type Checkbox */}
+                <div className="mt-4 flex items-center">
+                    <input
+                        id="account_type"
+                        type="checkbox"
+                        name="account_type"
+                        checked={data.account_type === 1}
+                        onChange={(e) =>
+                            setData('account_type', e.target.checked ? 1 : 0)
+                        }
+                        className="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
+                    />
+                    <label htmlFor="account_type" className="ml-2 block text-sm text-gray-900">
+                        Register as Provider
+                    </label>
+                </div>
+
+                <InputError message={errors.account_type} className="mt-2" />
 
                 <div className="mt-4 flex items-center justify-end">
                     <Link
