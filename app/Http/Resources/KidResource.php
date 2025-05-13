@@ -15,6 +15,8 @@ class KidResource extends JsonResource
             'name' => $this->name,
             'age' => $this->age,
             'user' => new UserResource($this->whenLoaded('user')),
+            
+            'subscription_kid' => SubscriptionKidResource::collection($this->whenLoaded('subscriptionKids')),
         ];
     }
 }

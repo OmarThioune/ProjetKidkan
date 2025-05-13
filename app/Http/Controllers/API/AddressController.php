@@ -13,7 +13,7 @@ class AddressController extends Controller
 {
     public function index(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
-        return AddressResource::collection(Address::latest()->paginate(10));
+        return AddressResource::collection(Address::latest()->paginate());
     }
 
     public function store(AddressRequest $request): AddressResource|\Illuminate\Http\JsonResponse

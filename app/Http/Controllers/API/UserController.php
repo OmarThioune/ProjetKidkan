@@ -13,7 +13,7 @@ class UserController extends Controller
 {
     public function index(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
-        return UserResource::collection(User::latest()->paginate(10));
+        return UserResource::collection(User::latest()->paginate());
     }
 
     public function store(UserRequest $request): UserResource|\Illuminate\Http\JsonResponse

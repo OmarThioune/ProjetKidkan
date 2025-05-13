@@ -107,21 +107,22 @@ const Recherche = () => {
                             {child.name} - {child.age} ans
                         </summary>
                         <ul style={{ marginTop: "10px", paddingLeft: "20px" }}>
-                            {child.subscription_kids?.length > 0 ? (
-                                child.subscription_kids.map((sub) => (
-                                    <li key={sub.id} style={{ marginBottom: "5px" }}>
-                                        Activité ID: {sub.instance_activity_id}
-                                        <button
-                                            onClick={() => handleCancelActivity(sub.id)}
-                                            style={cancelButtonStyle}
-                                        >
-                                            Annuler
-                                        </button>
-                                    </li>
-                                ))
-                            ) : (
-                                <li>Aucune activité inscrite</li>
-                            )}
+                        {child.subscription_kids?.length > 0 ? (
+                            child.subscription_kids.map((sub) => (
+                                <li key={sub.id} style={{ marginBottom: "5px" }}>
+                                    Activité ID: {sub.instance_activity_id}
+                                    <button
+                                        onClick={() => handleCancelActivity(sub.id)}
+                                        style={cancelButtonStyle}
+                                    >
+                                        Annuler
+                                    </button>
+                                </li>
+                            ))
+                        ) : (
+                            <li>Aucune activité inscrite</li>
+                        )}
+
                         </ul>
                     </details>
                 </div>

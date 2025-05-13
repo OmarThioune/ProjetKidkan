@@ -13,7 +13,7 @@ class ProviderController extends Controller
 {
     public function index(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
-        return ProviderResource::collection(Provider::latest()->paginate(10));
+        return ProviderResource::collection(Provider::latest()->paginate());
     }
 
     public function store(ProviderRequest $request): ProviderResource|\Illuminate\Http\JsonResponse

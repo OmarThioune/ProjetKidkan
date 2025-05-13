@@ -13,7 +13,7 @@ class ActivityCategoryController extends Controller
 {
     public function index(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
-        return ActivityCategoryResource::collection(ActivityCategory::latest()->paginate(10));
+        return ActivityCategoryResource::collection(ActivityCategory::latest()->paginate());
     }
 
     public function store(ActivityCategoryRequest $request): ActivityCategoryResource|\Illuminate\Http\JsonResponse

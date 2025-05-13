@@ -13,7 +13,7 @@ class ImageController extends Controller
 {
     public function index(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
-        return ImageResource::collection(Image::latest()->paginate(10));
+        return ImageResource::collection(Image::latest()->paginate());
     }
 
     public function store(ImageRequest $request): ImageResource|\Illuminate\Http\JsonResponse

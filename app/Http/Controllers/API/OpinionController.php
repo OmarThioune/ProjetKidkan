@@ -13,7 +13,7 @@ class OpinionController extends Controller
 {
     public function index(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
-        return OpinionResource::collection(Opinion::latest()->paginate(10));
+        return OpinionResource::collection(Opinion::latest()->paginate());
     }
 
     public function store(OpinionRequest $request): OpinionResource|\Illuminate\Http\JsonResponse

@@ -15,6 +15,7 @@ class SubscriptionKidResource extends JsonResource
             'instance_activity_id' => $this->instance_activity_id,
             'favorite' => $this->favorite,
             'status' => $this->status,
+            'instance_activity' => new InstanceActivityResource($this->whenLoaded('instanceActivity')),
         ];
     }
 }

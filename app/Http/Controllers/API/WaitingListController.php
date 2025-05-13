@@ -13,7 +13,7 @@ class WaitingListController extends Controller
 {
     public function index(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
-        return WaitingListResource::collection(WaitingList::latest()->paginate(10));
+        return WaitingListResource::collection(WaitingList::latest()->paginate());
     }
 
     public function store(WaitingListRequest $request): WaitingListResource|\Illuminate\Http\JsonResponse

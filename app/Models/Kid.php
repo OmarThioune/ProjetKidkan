@@ -46,7 +46,7 @@ class Kid extends Model
 		return $this->belongsTo(User::class);
 	}
 
-	public function subscription_kids()
+	public function subscriptionKids()
 	{
 		return $this->hasMany(SubscriptionKid::class);
 	}

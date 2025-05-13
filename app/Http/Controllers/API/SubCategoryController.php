@@ -13,7 +13,7 @@ class SubCategoryController extends Controller
 {
     public function index(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
-        return SubCategoryResource::collection(SubCategory::latest()->paginate(10));
+        return SubCategoryResource::collection(SubCategory::latest()->paginate());
     }
 
     public function store(SubCategoryRequest $request): SubCategoryResource|\Illuminate\Http\JsonResponse

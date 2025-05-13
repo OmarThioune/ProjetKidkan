@@ -13,7 +13,7 @@ class CategoryController extends Controller
 {
     public function index(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
-        return CategoryResource::collection(Category::latest()->paginate(10));
+        return CategoryResource::collection(Category::latest()->paginate());
     }
 
     public function store(CategoryRequest $request): CategoryResource|\Illuminate\Http\JsonResponse

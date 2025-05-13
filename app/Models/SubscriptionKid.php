@@ -41,7 +41,7 @@ class SubscriptionKid extends Model
 		'status'
 	];
 
-	public function instance_activity()
+	public function instanceActivity()
 	{
 		return $this->belongsTo(InstanceActivity::class);
 	}

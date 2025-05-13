@@ -13,7 +13,7 @@ class PricingController extends Controller
 {
     public function index(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
-        return PricingResource::collection(Pricing::latest()->paginate(10));
+        return PricingResource::collection(Pricing::latest()->paginate());
     }
 
     public function store(PricingRequest $request): PricingResource|\Illuminate\Http\JsonResponse

@@ -13,7 +13,9 @@ class KidController extends Controller
 {
     public function index(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
-        return KidResource::collection(Kid::latest()->paginate(10));
+        return KidResource::collection(
+            Kid::with(['user','subscriptionKids.instanceActivity.subActivity'])->latest()->paginate()
+        );
     }
 
     public function store(KidRequest $request): KidResource|\Illuminate\Http\JsonResponse
@@ -29,7 +31,7 @@ class KidController extends Controller
 
     public function show(Kid $kid): KidResource
     {
-        $kid->load('user');
+        $kid->load(['user','subscriptionKids.instanceActivity.subActivity']);
         return KidResource::make($kid);
     }
 

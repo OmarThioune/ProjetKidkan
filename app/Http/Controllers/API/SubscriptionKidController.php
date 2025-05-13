@@ -13,7 +13,10 @@ class SubscriptionKidController extends Controller
 {
     public function index(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
-        return SubscriptionKidResource::collection(SubscriptionKid::latest()->paginate(10));
+        return SubscriptionKidResource::collection(
+            SubscriptionKid::with(['instanceActivity'])->latest()->paginate()
+        );
+    
     }
 
     public function store(SubscriptionKidRequest $request): SubscriptionKidResource|\Illuminate\Http\JsonResponse
@@ -29,6 +32,7 @@ class SubscriptionKidController extends Controller
 
     public function show(SubscriptionKid $subscriptionKid): SubscriptionKidResource
     {
+        $subscriptionKid->load(['instanceActivity']);
         return SubscriptionKidResource::make($subscriptionKid);
     }
 
