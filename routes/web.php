@@ -19,6 +19,7 @@ Route::get('/ajouterActivite', fn () => Inertia::render('AjouterActivite'))->nam
 Route::get('/activite', fn () => Inertia::render('Activite'))->name('activite');
 Route::get('/instance', fn () => Inertia::render('Instance'))->name('instance');
 Route::get('/sub', fn () => Inertia::render('Sub'))->name('sub');
+Route::get('/map', fn () => Inertia::render('Map'))->name('map');
 
 // 🔹 Dashboard protégé (déjà en place)
 Route::get('/dashboard', function () {
