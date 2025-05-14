@@ -56,9 +56,6 @@ export default function Instance() {
     e.preventDefault();
 
     try {
-      console.log("➤ Soumission du formulaire...");
-
-      // Création de l'adresse
       const addressRes = await axios.post("/api/addresses", {
         civil_number: form.civil_number,
         street_name: form.street_name,
@@ -69,47 +66,48 @@ export default function Instance() {
         address_description: form.address_description,
       });
 
-      const address_id = addressRes.data.id;
-      console.log("✅ Adresse créée avec ID :", address_id);
+      const address_id = addressRes.data.data.id;
 
-      // Création de l'instance
+      console.log("Address ID:", address_id);
+
       const instanceRes = await axios.post("/api/instance_activities", {
         start: form.start,
         end: form.end,
         deadline: form.deadline,
-        places: Number(form.places),
+        places: form.places,
+        nb_inscription: form.nb_inscription,
         debutHour: form.debutHour,
         endHour: form.endHour,
-        minutes: Number(form.minutes),
+        status: form.status,
+        minutes: form.minutes,
         debutSubscription: form.debutSubscription,
         location: form.location,
-        sub_activity_id: Number(form.sub_activity_id),
-        address_id,
+        cancelation: form.cancelation,
+        sub_activity_id: form.sub_activity_id,
+        address_id : address_id,
       });
 
       const instance_id = instanceRes.data.id;
-      console.log("✅ Instance créée avec ID :", instance_id);
 
-      // Création du pricing
       await axios.post("/api/pricings", {
-        price: Number(form.price),
+        price: form.price,
         type: form.type,
         instance_activity_id: instance_id,
       });
 
-      console.log("✅ Tarification ajoutée");
-
-      // Réinitialisation du formulaire
       setForm({
         start: "",
         end: "",
         deadline: "",
         places: 0,
+        nb_inscription: 0,
         debutHour: "",
         endHour: "",
+        status: "",
         minutes: 0,
         debutSubscription: "",
         location: "",
+        cancelation: "",
         sub_activity_id: "",
         civil_number: "",
         street_name: "",
@@ -123,15 +121,8 @@ export default function Instance() {
       });
 
       fetchInstances();
-      alert("Ajout réussi !");
     } catch (error) {
-      if (error.response && error.response.status === 422) {
-        console.error("❌ Erreurs de validation Laravel :", error.response.data.errors);
-        alert("Erreur de validation : veuillez vérifier les champs du formulaire.");
-      } else {
-        console.error("❌ Erreur lors de l'ajout :", error);
-        alert("Une erreur est survenue. Veuillez réessayer.");
-      }
+      console.error("Erreur lors de l'ajout:", error);
     }
   };
 
@@ -165,11 +156,14 @@ export default function Instance() {
         {renderField("Date de fin", "end", "date")}
         {renderField("Date limite", "deadline", "date")}
         {renderField("Places disponibles", "places", "number")}
+        {renderField("Nombre d'inscriptions", "nb_inscription", "number")}
         {renderField("Heure de début", "debutHour", "time")}
         {renderField("Heure de fin", "endHour", "time")}
+        {renderField("Statut", "status")}
         {renderField("Durée (minutes)", "minutes", "number")}
         {renderField("Début des inscriptions", "debutSubscription", "date")}
         {renderField("Lieu", "location")}
+        {renderField("Politique d'annulation", "cancelation")}
 
         <div className="flex flex-col">
           <label htmlFor="sub_activity_id" className="text-sm text-gray-600 mb-1">Sous-activité</label>
