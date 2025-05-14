@@ -78,14 +78,11 @@ export default function Instance() {
         end: form.end,
         deadline: form.deadline,
         places: Number(form.places),
-        nb_inscription: Number(form.nb_inscription),
         debutHour: form.debutHour,
         endHour: form.endHour,
-        status: form.status,
         minutes: Number(form.minutes),
         debutSubscription: form.debutSubscription,
         location: form.location,
-        cancelation: form.cancelation,
         sub_activity_id: Number(form.sub_activity_id),
         address_id,
       });
@@ -108,14 +105,11 @@ export default function Instance() {
         end: "",
         deadline: "",
         places: 0,
-        nb_inscription: 0,
         debutHour: "",
         endHour: "",
-        status: "",
         minutes: 0,
         debutSubscription: "",
         location: "",
-        cancelation: "",
         sub_activity_id: "",
         civil_number: "",
         street_name: "",
@@ -171,14 +165,11 @@ export default function Instance() {
         {renderField("Date de fin", "end", "date")}
         {renderField("Date limite", "deadline", "date")}
         {renderField("Places disponibles", "places", "number")}
-        {renderField("Nombre d'inscriptions", "nb_inscription", "number")}
         {renderField("Heure de début", "debutHour", "time")}
         {renderField("Heure de fin", "endHour", "time")}
-        {renderField("Statut", "status")}
         {renderField("Durée (minutes)", "minutes", "number")}
         {renderField("Début des inscriptions", "debutSubscription", "date")}
         {renderField("Lieu", "location")}
-        {renderField("Politique d'annulation", "cancelation")}
 
         <div className="flex flex-col">
           <label htmlFor="sub_activity_id" className="text-sm text-gray-600 mb-1">Sous-activité</label>
