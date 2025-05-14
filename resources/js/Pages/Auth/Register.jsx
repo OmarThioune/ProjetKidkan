@@ -8,7 +8,9 @@ import { Head, Link, useForm } from '@inertiajs/react';
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
         name: '',
+        lastname: '',
         email: '',
+        address: '',
         password: '',
         password_confirmation: '',
         account_type: 0, // 0 = normal user, 1 = provider
@@ -29,7 +31,6 @@ export default function Register() {
             <form onSubmit={submit}>
                 <div>
                     <InputLabel htmlFor="name" value="Name" />
-
                     <TextInput
                         id="name"
                         name="name"
@@ -40,13 +41,25 @@ export default function Register() {
                         onChange={(e) => setData('name', e.target.value)}
                         required
                     />
-
                     <InputError message={errors.name} className="mt-2" />
                 </div>
 
                 <div className="mt-4">
-                    <InputLabel htmlFor="email" value="Email" />
+                    <InputLabel htmlFor="lastname" value="Last Name" />
+                    <TextInput
+                        id="lastname"
+                        name="lastname"
+                        value={data.lastname}
+                        className="mt-1 block w-full"
+                        autoComplete="family-name"
+                        onChange={(e) => setData('lastname', e.target.value)}
+                        required
+                    />
+                    <InputError message={errors.lastname} className="mt-2" />
+                </div>
 
+                <div className="mt-4">
+                    <InputLabel htmlFor="email" value="Email" />
                     <TextInput
                         id="email"
                         type="email"
@@ -57,13 +70,25 @@ export default function Register() {
                         onChange={(e) => setData('email', e.target.value)}
                         required
                     />
-
                     <InputError message={errors.email} className="mt-2" />
                 </div>
 
                 <div className="mt-4">
-                    <InputLabel htmlFor="password" value="Password" />
+                    <InputLabel htmlFor="address" value="Address" />
+                    <TextInput
+                        id="address"
+                        name="address"
+                        value={data.address}
+                        className="mt-1 block w-full"
+                        autoComplete="street-address"
+                        onChange={(e) => setData('address', e.target.value)}
+                        required
+                    />
+                    <InputError message={errors.address} className="mt-2" />
+                </div>
 
+                <div className="mt-4">
+                    <InputLabel htmlFor="password" value="Password" />
                     <TextInput
                         id="password"
                         type="password"
@@ -74,16 +99,11 @@ export default function Register() {
                         onChange={(e) => setData('password', e.target.value)}
                         required
                     />
-
                     <InputError message={errors.password} className="mt-2" />
                 </div>
 
                 <div className="mt-4">
-                    <InputLabel
-                        htmlFor="password_confirmation"
-                        value="Confirm Password"
-                    />
-
+                    <InputLabel htmlFor="password_confirmation" value="Confirm Password" />
                     <TextInput
                         id="password_confirmation"
                         type="password"
@@ -91,16 +111,10 @@ export default function Register() {
                         value={data.password_confirmation}
                         className="mt-1 block w-full"
                         autoComplete="new-password"
-                        onChange={(e) =>
-                            setData('password_confirmation', e.target.value)
-                        }
+                        onChange={(e) => setData('password_confirmation', e.target.value)}
                         required
                     />
-
-                    <InputError
-                        message={errors.password_confirmation}
-                        className="mt-2"
-                    />
+                    <InputError message={errors.password_confirmation} className="mt-2" />
                 </div>
 
                 {/* Account Type Checkbox */}
@@ -110,16 +124,13 @@ export default function Register() {
                         type="checkbox"
                         name="account_type"
                         checked={data.account_type === 1}
-                        onChange={(e) =>
-                            setData('account_type', e.target.checked ? 1 : 0)
-                        }
+                        onChange={(e) => setData('account_type', e.target.checked ? 1 : 0)}
                         className="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
                     />
                     <label htmlFor="account_type" className="ml-2 block text-sm text-gray-900">
                         Register as Provider
                     </label>
                 </div>
-
                 <InputError message={errors.account_type} className="mt-2" />
 
                 <div className="mt-4 flex items-center justify-end">

@@ -11,7 +11,7 @@ Route::get('/', function () {
 })->name('Accueil');
 
 // 🔹 Pages publiques
-Route::get('/recherche', fn () => Inertia::render('Recherche'))->name('recherche');
+Route::get('/compte', fn () => Inertia::render('Compte'))->name('compte');
 Route::get('/apropos', fn () => Inertia::render('APropos'))->name('apropos');
 Route::get('/categorie', fn () => Inertia::render('Categorie'))->name('categorie');
 Route::get('/ajouter', fn () => Inertia::render('Ajouter'))->name('ajouter');

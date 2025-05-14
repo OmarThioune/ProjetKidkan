@@ -3,7 +3,7 @@ import "./Accueil.css";
 
 const menuItems = [
   { label: "Accueil", link: "/" },
-  { label: "Profil", link: "/recherche" },
+  { label: "Compte", link: "/compte" },
   { label: "Authentification", link: "/profile" },
   { label: "Activité", link: "/activite" },
   { label: "Ajouter", link: "/ajouter" },

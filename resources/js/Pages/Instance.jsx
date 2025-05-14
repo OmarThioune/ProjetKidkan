@@ -56,6 +56,9 @@ export default function Instance() {
     e.preventDefault();
 
     try {
+      console.log("➤ Soumission du formulaire...");
+
+      // Création de l'adresse
       const addressRes = await axios.post("/api/addresses", {
         civil_number: form.civil_number,
         street_name: form.street_name,
@@ -67,32 +70,39 @@ export default function Instance() {
       });
 
       const address_id = addressRes.data.id;
+      console.log("✅ Adresse créée avec ID :", address_id);
 
+      // Création de l'instance
       const instanceRes = await axios.post("/api/instance_activities", {
         start: form.start,
         end: form.end,
         deadline: form.deadline,
-        places: form.places,
-        nb_inscription: form.nb_inscription,
+        places: Number(form.places),
+        nb_inscription: Number(form.nb_inscription),
         debutHour: form.debutHour,
         endHour: form.endHour,
         status: form.status,
-        minutes: form.minutes,
+        minutes: Number(form.minutes),
         debutSubscription: form.debutSubscription,
         location: form.location,
         cancelation: form.cancelation,
-        sub_activity_id: form.sub_activity_id,
+        sub_activity_id: Number(form.sub_activity_id),
         address_id,
       });
 
       const instance_id = instanceRes.data.id;
+      console.log("✅ Instance créée avec ID :", instance_id);
 
+      // Création du pricing
       await axios.post("/api/pricings", {
-        price: form.price,
+        price: Number(form.price),
         type: form.type,
         instance_activity_id: instance_id,
       });
 
+      console.log("✅ Tarification ajoutée");
+
+      // Réinitialisation du formulaire
       setForm({
         start: "",
         end: "",
@@ -119,8 +129,15 @@ export default function Instance() {
       });
 
       fetchInstances();
+      alert("Ajout réussi !");
     } catch (error) {
-      console.error("Erreur lors de l'ajout:", error);
+      if (error.response && error.response.status === 422) {
+        console.error("❌ Erreurs de validation Laravel :", error.response.data.errors);
+        alert("Erreur de validation : veuillez vérifier les champs du formulaire.");
+      } else {
+        console.error("❌ Erreur lors de l'ajout :", error);
+        alert("Une erreur est survenue. Veuillez réessayer.");
+      }
     }
   };
 

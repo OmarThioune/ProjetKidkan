@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-const Recherche = () => {
+const Compte = () => {
     const [name, setName] = useState("");
     const [phone, setPhone] = useState("");
     const [children, setChildren] = useState([]);
@@ -184,4 +184,4 @@ const childCardStyle = {
     boxShadow: "0 0 5px rgba(0,0,0,0.05)"
 };
 
-export default Recherche;
+export default Compte;
