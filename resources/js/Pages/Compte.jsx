@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 
 const Compte = () => {
     const [name, setName] = useState("");
@@ -48,6 +49,7 @@ const Compte = () => {
     };
 
     return (
+        <AuthenticatedLayout>
         <div style={containerStyle}>
             <h1 style={{ textAlign: "center", color: "#333" }}>Modifier les informations</h1>
 
@@ -128,6 +130,7 @@ const Compte = () => {
                 </div>
             ))}
         </div>
+        </AuthenticatedLayout>
     );
 };
 
