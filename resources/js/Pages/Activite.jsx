@@ -154,8 +154,8 @@ const Activite = () => {
                                 <p><strong>Age minimum:</strong> {instanceActivity.sub_activity.min_Age}</p>
                                 <p><strong>Age maximum:</strong> {instanceActivity.sub_activity.max_Age}</p>
                                 <p><strong>Niveau:</strong> {instanceActivity.sub_activity.level}</p>
-                                <p><strong>Prix:</strong> {instanceActivity.pricings.price}</p>
-                                <p> {JSON.stringify(instanceActivity)}</p>
+                                <p><strong>Prix:</strong> {instanceActivity.pricings[0].price}</p>
+                               
 
                                 <div className="map-container">
                                     <iframe

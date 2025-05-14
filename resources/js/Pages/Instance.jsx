@@ -87,7 +87,7 @@ export default function Instance() {
         address_id : address_id,
       });
 
-      const instance_id = instanceRes.data.id;
+      const instance_id = instanceRes.data.data.id;
 
       await axios.post("/api/pricings", {
         price: form.price,

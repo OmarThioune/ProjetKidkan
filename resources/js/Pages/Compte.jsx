@@ -100,7 +100,7 @@ const Compte = () => {
                     <button onClick={handleAddChild} style={buttonStyle}>Ajouter</button>
                 </div>
             </div>
-
+            
             <h2 style={{ color: "#444" }}>Liste des enfants</h2>
             {children.map((child, index) => (
                 <div key={child.id || index} style={childCardStyle}>
@@ -109,10 +109,10 @@ const Compte = () => {
                             {child.name} - {child.age} ans
                         </summary>
                         <ul style={{ marginTop: "10px", paddingLeft: "20px" }}>
-                        {child.subscription_kids?.length > 0 ? (
-                            child.subscription_kids.map((sub) => (
+                        {child.subscription_kid?.length > 0 ? (
+                            child.subscription_kid.map((sub) => (
                                 <li key={sub.id} style={{ marginBottom: "5px" }}>
-                                    Activité ID: {sub.instance_activity_id}
+                                     {sub.instance_activity.sub_activity.name}
                                     <button
                                         onClick={() => handleCancelActivity(sub.id)}
                                         style={cancelButtonStyle}
