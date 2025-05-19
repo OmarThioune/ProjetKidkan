@@ -18,7 +18,7 @@ const Map = () => {
 
     const formatAddress = (addr) => {
         if (!addr) return "";
-        return `${addr.civil_number}, ${addr.road}, ${addr.city}, ${addr.province}, ${addr.postal_code}, ${addr.country}`;
+        return `${addr.civil_number}, ${addr.street_name}, ${addr.city}, ${addr.province}, ${addr.postal_code}, ${addr.country}`;
     };
 
     const allAddresses = activities
