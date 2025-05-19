@@ -139,7 +139,7 @@ const Activite = () => {
             )}
 
             {filteredActivities.map((instanceActivity) => {
-                const fullAddress = `${instanceActivity.address.civil_number}, ${instanceActivity.address.road}, ${instanceActivity.address.city}, ${instanceActivity.address.province}, ${instanceActivity.address.postal_code}, ${instanceActivity.address.country}`;
+                const fullAddress = `${instanceActivity.address.civil_number}, ${instanceActivity.address.street_name}, ${instanceActivity.address.city}, ${instanceActivity.address.province}, ${instanceActivity.address.postal_code}, ${instanceActivity.address.country}`;
 
                 return (
                     <div key={instanceActivity.id} className="activity-card">
