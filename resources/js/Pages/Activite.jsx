@@ -144,7 +144,7 @@ const Activite = () => {
                 return (
                     <div key={instanceActivity.id} className="activity-card">
                         <h3>{instanceActivity.sub_activity.activity.sub_category.category.name}</h3>
-                        <p><strong>Date début:</strong> {instanceActivity.start} | <strong>Date fin:</strong> {instanceActivity.end}</p>
+                        <p><strong>Date début:</strong> {instanceActivity.start.split("T")[0]} | <strong>Date fin:</strong> {instanceActivity.end.split("T")[0]}</p>
                         <p><strong>Places restantes:</strong> {instanceActivity.places - instanceActivity.nb_inscription}</p>
                         <button className="primary-button" onClick={() => toggleDetails(instanceActivity.id)}>Consulter</button>
 
