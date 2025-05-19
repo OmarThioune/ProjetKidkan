@@ -27,10 +27,10 @@ const Navigation = () => (
     <nav style={{ marginTop: '30px', backgroundColor: '#f8f9fa', padding: '10px 0' }}>
     <ul style={{ listStyle: 'none', display: 'flex', justifyContent: 'center', padding: 0, margin: 0 }}>
         <li style={{ margin: '0 15px' }}>
-            <a href="/accueil" style={{ textDecoration: 'none', color: '#333' }}>Accueil</a>
+            <a href={route('Accueil')} style={{ textDecoration: 'none', color: '#333' }}>Accueil</a>
         </li>
         <li style={{ margin: '0 15px' }}>
-            <a href="/recherche" style={{ textDecoration: 'none', color: '#333' }}>Recherche</a>
+            <a href={route('activities')} style={{ textDecoration: 'none', color: '#333' }}>Activités</a>
         </li>
         <li style={{ margin: '0 15px' }}>
             <a href="/profile" style={{ textDecoration: 'none', color: '#333' }}>Profile</a>
