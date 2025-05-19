@@ -3,15 +3,15 @@ import "./Accueil.css";
 
 const menuItems = [
   { label: "Accueil", link: "/" },
-  { label: "Compte", link: "/compte" },
-  { label: "Authentification", link: "/profile" },
+  //{ label: "Compte", link: "/compte" },
+  //{ label: "Authentification", link: "/profile" },
   { label: "Activité", link: "/activite" },
-  { label: "Ajouter", link: "/ajouter" },
-  { label: "Ajouter Activité", link: "/ajouterActivite" },
+  { label: "Catégorie", link: "/categorie" },
+  //{ label: "Ajouter Activité", link: "/ajouterActivite" },
   { label: "À propos", link: "/apropos" },
   { label: "Connexion", link: "/login" },
-  { label: "Instance", link: "/instance" },
-  { label: "Sub", link: "/sub" },
+  //{ label: "Instance", link: "/instance" },
+  //{ label: "Sub", link: "/sub" },
 ];
 
 const Accueil = () => {
