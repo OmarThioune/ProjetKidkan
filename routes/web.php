@@ -11,10 +11,9 @@ Route::get('/', function () {
 })->name('Accueil');
 
 // 🔹 Pages publiques
-//Route::get('/compte', fn () => Inertia::render('Compte'))->name('compte');
+Route::get('/compte', fn () => Inertia::render('Compte'))->name('compte');
 Route::get('/apropos', fn () => Inertia::render('APropos'))->name('apropos');
 Route::get('/categorie', fn () => Inertia::render('Categorie'))->name('categorie');
-//Route::get('/ajouterActivite', fn () => Inertia::render('AjouterActivite'))->name('ajouterActivite');
 Route::get('/activite', fn () => Inertia::render('Activite'))->name('activite');
 Route::get('/activities', fn () => Inertia::render('Activities'))->name('activities');
 
@@ -30,6 +29,7 @@ Route::get('/dashboard', function () {
 // 🔹 Profil (auth requis)
 Route::middleware(['auth', 'verified'])->group(function () {
 Route::get('/profil', fn () => Inertia::render('Profil'))->name('profil');
+Route::get('/ajouter', fn () => Inertia::render('Ajouter'))->name('ajouter');
 
 Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
 Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
