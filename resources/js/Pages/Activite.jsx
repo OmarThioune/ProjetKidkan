@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import {  Link } from '@inertiajs/react';
 import axios from "axios";
 import "./Activite.css";
-import { usePage } from '@inertiajs/react';
 
 const niveaux = ["Débutant", "Intermédiaire", "Avancé"];
 const categories = ["TEST", "Sport", "Technologie"];
@@ -23,9 +22,6 @@ const Activite = () => {
     const [avisParActivite, setAvisParActivite] = useState({});
     const [Kids, setKids] = useState([]);
     const [selectedKids, setSelectedKids] = useState({});
-
-    const user = props.user;
-    const kids = props.kids;
 
     useEffect(() => {
         axios.get("/api/instance_activities")
@@ -175,30 +171,24 @@ const Activite = () => {
                                     <p>{instanceActivity.address.address_description}</p>
                                 </div>
 
-                                    {user ? (
-                                        <>
-                                            <p><strong>Choisissez un enfant :</strong></p>
-                                            <select
-                                                className="child-select"
-                                                value={selectedKids[instanceActivity.id] || ""}
-                                                onChange={(e) =>
-                                                    setSelectedKids((prev) => ({
-                                                        ...prev,
-                                                        [instanceActivity.id]: e.target.value,
-                                                    }))
-                                                }
-                                            >
-                                                <option value="">-- Sélectionner --</option>
-                                                {Kids.map((child) => (
-                                                    <option key={child.id} value={child.id}>
-                                                        {child.name} ({child.age} ans)
-                                                    </option>
-                                                ))}
-                                            </select>
-                                        </>
-                                    ) : (
-                                        <p className="text-red-600 font-bold">Veuillez vous connecter pour choisir un enfant.</p>
-                                    )}
+                                <p><strong>Choisissez un enfant :</strong></p>
+                                <select
+                                    className="child-select"
+                                    value={selectedKids[instanceActivity.id] || ""}
+                                    onChange={(e) =>
+                                        setSelectedKids((prev) => ({
+                                            ...prev,
+                                            [instanceActivity.id]: e.target.value,
+                                        }))
+                                    }
+                                >
+                                    <option value="">-- Sélectionner --</option>
+                                    {Kids.map((child) => (
+                                        <option key={child.id} value={child.id}>
+                                            {child.name} ({child.age} ans)
+                                        </option>
+                                    ))}
+                                </select>
                                 <div className="button-group">
                                     <button className="success-button" onClick={() => inscrireEnfant(instanceActivity.id)}>S'inscrire</button>
                                     <button className="danger-button" onClick={() => toggleDetails(instanceActivity.id)}>Fermer</button>
