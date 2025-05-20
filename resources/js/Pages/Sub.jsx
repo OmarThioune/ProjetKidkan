@@ -43,8 +43,8 @@ export default function Sub() {
       setSuccess(true);
       setForm({
         name: "",
-        min_age: 0,
-        max_age: 0,
+        min_Age: 0,
+        max_Age: 0,
         description: "",
         material: "",
         level: "débutant",
