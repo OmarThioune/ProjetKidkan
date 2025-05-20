@@ -12,7 +12,7 @@ const Accueil = () => {
   const menuItems = isLoggedIn
     ? [
         { label: "Accueil", link: "/dashboard" },
-        { label: "Compte", link: "/compte" },
+        //{ label: "Compte", link: "/compte" },
         { label: "Activités", link: "/activities" },
         //{ label: "Catégorie", link: "/categorie" },
         { label: "Ajouter Activité", link: "/ajouter" },
