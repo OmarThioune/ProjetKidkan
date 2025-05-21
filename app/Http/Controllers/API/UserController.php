@@ -13,8 +13,8 @@ class UserController extends Controller
 {
     public function index(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
-        return KidResource::collection(
-            Kid::with(['user','subscriptionKids.instanceActivity.subActivity'])->latest()->paginate()
+        return UserResource::collection(
+            User::with(['kids.subscriptionKids.instanceActivity.subActivity'])->latest()->paginate()
         );
         return UserResource::collection(User::latest()->paginate());
     }

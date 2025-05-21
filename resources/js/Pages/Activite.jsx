@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {  Link } from '@inertiajs/react';
+import { usePage } from "@inertiajs/react";
 import axios from "axios";
 import "./Activite.css";
 
@@ -7,6 +7,10 @@ const niveaux = ["Débutant", "Intermédiaire", "Avancé"];
 const categories = ["TEST", "Sport", "Technologie"];
 
 const Activite = () => {
+    const { auth } = usePage().props;
+    const isLoggedIn = !!auth.user;
+
+
     const [activities, setActivities] = useState([]);
     const [expandedActivity, setExpandedActivity] = useState(null);
     const [showFilters, setShowFilters] = useState(false);
@@ -138,7 +142,7 @@ const Activite = () => {
                 </div>
             )}
 
-            {filteredActivities.map((instanceActivity) => {
+{activities.map((instanceActivity) => {
                 const fullAddress = `${instanceActivity.address.civil_number}, ${instanceActivity.address.street_name}, ${instanceActivity.address.city}, ${instanceActivity.address.province}, ${instanceActivity.address.postal_code}, ${instanceActivity.address.country}`;
 
                 return (
@@ -149,6 +153,7 @@ const Activite = () => {
                         <button className="primary-button" onClick={() => toggleDetails(instanceActivity.id)}>Consulter</button>
 
                         {expandedActivity === instanceActivity.id && (
+                            <>
                             <div className="activity-details">
                                 <p><strong>Description:</strong> {instanceActivity.sub_activity.description}</p>
                                 <p><strong>Matériel requis:</strong> {instanceActivity.sub_activity.material}</p>
@@ -156,7 +161,8 @@ const Activite = () => {
                                 <p><strong>Age maximum:</strong> {instanceActivity.sub_activity.max_Age}</p>
                                 <p><strong>Niveau:</strong> {instanceActivity.sub_activity.level}</p>
                                 <p><strong>Prix:</strong> {instanceActivity.pricings[0].price}</p>
-                               
+                                <p><strong>Adresse:</strong> {fullAddress}</p>
+                                <p><strong>Description adresse:</strong> {instanceActivity.address.address_description}</p>
 
                                 <div className="map-container">
                                     <iframe
@@ -168,34 +174,40 @@ const Activite = () => {
                                         loading="lazy"
                                         src={`https://www.google.com/maps?q=${encodeURIComponent(fullAddress)}&output=embed`}
                                     ></iframe>
-                                    <p>{instanceActivity.address.address_description}</p>
+                                    
+                                    
                                 </div>
 
-                                <p><strong>Choisissez un enfant :</strong></p>
-                                <select
-                                    className="child-select"
-                                    value={selectedKids[instanceActivity.id] || ""}
-                                    onChange={(e) =>
-                                        setSelectedKids((prev) => ({
-                                            ...prev,
-                                            [instanceActivity.id]: e.target.value,
-                                        }))
-                                    }
-                                >
-                                    <option value="">-- Sélectionner --</option>
-                                    {Kids.map((child) => (
-                                        <option key={child.id} value={child.id}>
-                                            {child.name} ({child.age} ans)
-                                        </option>
-                                    ))}
-                                </select>
-                                <div className="button-group">
-                                    <button className="success-button" onClick={() => inscrireEnfant(instanceActivity.id)}>S'inscrire</button>
-                                    <button className="danger-button" onClick={() => toggleDetails(instanceActivity.id)}>Fermer</button>
-                                    <button className="warning-button" onClick={() => setShowAvis(instanceActivity.id)}>Avis</button>
-                                </div>
+
+                                {isLoggedIn && (
+                                    <>
+                                        <p><strong>Choisissez un enfant :</strong></p>
+                                        <select className="child-select"
+                                            value={selectedKids[instanceActivity.id] || ""}
+                                            onChange={(e) => setSelectedKids((prev) => ({ ...prev, [instanceActivity.id]: e.target.value }))}
+                                        >
+                                            <option value="">-- Sélectionner --</option>
+                                            {Kids.map((child) => (
+                                                <option key={child.id} value={child.id}>{child.name} ({child.age} ans)</option>
+                                            ))}
+                                        </select>
+
+                                        <div className="button-group">
+                                            <button className="success-button" onClick={() => inscrireEnfant(instanceActivity.id)}>S'inscrire</button>
+                                            <button className="warning-button" onClick={() => setShowAvis(instanceActivity.id)}>Avis</button>
+                                        </div>
+                                        
+                                    </>
+
+                                )}
+                                
                             </div>
+                            
+
+                            <button className="danger-button" onClick={() => toggleDetails(instanceActivity.id)}>Fermer</button>
+                            </>
                         )}
+                        
 
 
 {showAvis === instanceActivity.id && (
@@ -224,12 +236,16 @@ const Activite = () => {
                                             </div>
                                         ))}
                                 </div>
+
                             </div>
+                            
                         )}
+
                     </div>
+                    
                 );
             })}
-
+        
             {filteredActivities.length === 0 && <p>Aucune activité ne correspond aux filtres.</p>}
         </div>
     );
