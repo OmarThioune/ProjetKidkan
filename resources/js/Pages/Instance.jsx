@@ -156,14 +156,47 @@ export default function Instance() {
         {renderField("Date de fin", "end", "date")}
         {renderField("Date limite", "deadline", "date")}
         {renderField("Places disponibles", "places", "number")}
-        {renderField("Nombre d'inscriptions", "nb_inscription", "number")}
         {renderField("Heure de début", "debutHour", "time")}
         {renderField("Heure de fin", "endHour", "time")}
         {renderField("Statut", "status")}
         {renderField("Durée (minutes)", "minutes", "number")}
         {renderField("Début des inscriptions", "debutSubscription", "date")}
         {renderField("Lieu", "location")}
-        {renderField("Politique d'annulation", "cancelation")}
+        <div className="flex items-center space-x-2">
+          <input
+            type="checkbox"
+            id="nb_inscription"
+            name="nb_inscription"
+            checked={form.nb_inscription === 0}
+            onChange={(e) => {
+              setForm({ ...form, nb_inscription: e.target.checked ? 0 : form.nb_inscription });
+            }}
+            className="w-4 h-4 text-blue-600"
+          />
+          <label htmlFor="nb_inscription" className="text-sm text-gray-600">
+            Nombre d'inscriptions : cocher pour 0
+          </label>
+        </div>
+
+        <div className="flex items-center space-x-2">
+          <input
+            type="checkbox"
+            id="cancelation"
+            name="cancelation"
+            checked={form.cancelation === "0"}
+            onChange={(e) => {
+              setForm({ ...form, cancelation: e.target.checked ? "0" : form.cancelation });
+            }}
+            className="w-4 h-4 text-blue-600"
+          />
+          <label htmlFor="cancelation" className="text-sm text-gray-600">
+            Politique d'annulation : cocher pour 0
+          </label>
+        </div>
+
+
+
+  
 
         <div className="flex flex-col">
           <label htmlFor="sub_activity_id" className="text-sm text-gray-600 mb-1">Sous-activité</label>
