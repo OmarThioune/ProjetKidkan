@@ -1,78 +1,162 @@
-/* Arrière-plan plein écran */
-.accueil-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background: radial-gradient(circle at center, #002366, #ff0000);
-    font-family: "Segoe UI", sans-serif;
-  }
-  
-  /* Rectangle central */
-  .accueil-menu {
-    background-color: white;
-    border-radius: 25px;
-    padding: 40px 60px;
-    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.3);
-    text-align: center;
-    max-width: 500px;
-    width: 90%;
-    animation: fadeIn 1s ease-out;
-  }
-  
-  .accueil-title {
-    font-size: 28px;
-    margin-bottom: 20px;
-    color: #002366;
-  }
-  
-  /* Liste des liens */
-  .accueil-liste {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  .accueil-element {
-    margin: 10px 0;
-  }
-  
-  .accueil-element a {
-    text-decoration: none;
-    font-size: 18px;
-    color: #ff0000;
-    background-color: #002366;
-    padding: 10px 20px;
-    border-radius: 12px;
-    display: inline-block;
-    transition: transform 0.2s ease, background-color 0.3s ease;
-  }
-  
-  /* Effets dynamiques */
-  .accueil-element a:hover {
-    transform: scale(1.1);
-    background-color: #ff0000;
-    color: white;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-  }
-  
-  /* Animation d’entrée */
-  @keyframes fadeIn {
-    0% {
-      opacity: 0;
-      transform: translateY(-40px);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
-/* Footer */
+/* Page de base */
+.accueil-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  font-family: "Segoe UI", sans-serif;
+}
+
+/* En-tête */
+.accueil-header {
+  background-color: #002366;
+  color: white;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.accueil-header h1 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.accueil-nav {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+  padding: 0;
+  margin: 0;
+}
+
+.accueil-nav li a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.accueil-nav li a:hover {
+  color: #ffcc00;
+}
+
+/* Contenu principal */
+.accueil-main {
+  flex: 1;
+  padding: 40px 20px;
+  max-width: 1000px;
+  margin: auto;
+}
+
+.hero-section {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.hero-section h2 {
+  font-size: 36px;
+  color: #002366;
+}
+
+.hero-section p {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.cta-button {
+  background-color: #ff0000;
+  color: white;
+  padding: 12px 24px;
+  font-size: 16px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.cta-button:hover {
+  background-color: #cc0000;
+}
+
+/* Section fonctionnalités */
+.features-section {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.features-section h3 {
+  font-size: 28px;
+  margin-bottom: 30px;
+  color: #002366;
+}
+
+.features-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: center;
+}
+
+.feature-box {
+  background-color: #f0f8ff;
+  padding: 20px;
+  border-radius: 12px;
+  max-width: 280px;
+  text-align: left;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.feature-box h4 {
+  margin-bottom: 10px;
+  color: #002366;
+}
+
+/* Témoignages */
+.temoignages-section {
+  background-color: #fffbe6;
+  padding: 40px 20px;
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.temoignages-section blockquote {
+  font-style: italic;
+  color: #555;
+  font-size: 18px;
+  margin: 0 auto;
+  max-width: 700px;
+}
+
+.temoignages-section span {
+  display: block;
+  margin-top: 10px;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Dernière section CTA */
+.cta-section {
+  text-align: center;
+  padding: 40px 20px;
+  background-color: #f7f7f7;
+}
+
+.cta-section h3 {
+  font-size: 24px;
+  margin-bottom: 10px;
+  color: #002366;
+}
+
+.cta-section p {
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+/* Pied de page */
 .footer {
-    background-color: #e0f7fa;
-    text-align: center;
-    padding: 20px 0;
-    color: #333;
-    margin-top: auto;
+  background-color: #f0f0f0;
+  text-align: center;
+  padding: 15px 0;
+  color: #555;
+  font-size: 14px;
 }
