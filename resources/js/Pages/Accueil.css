@@ -1,31 +1,18 @@
 /* Page */
 .accueil-page {
-  background: linear-gradient(135deg, #e0f7fa 0%, #fff 40%, #ffe0f0 100%);
-  background-attachment: fixed;
+  background: linear-gradient(-45deg, #d4fc79, #96e6a1, #fbc2eb, #a18cd1);
+  background-size: 400% 400%;
+  animation: gradientBackground 20s ease infinite;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
   font-family: "Segoe UI", sans-serif;
-  position: relative;
-  overflow: hidden;
 }
 
-.accueil-page::before {
-  content: "";
-  position: absolute;
-  width: 500px;
-  height: 500px;
-  background: rgba(255, 255, 255, 0.4);
-  backdrop-filter: blur(40px);
-  border-radius: 50%;
-  top: -100px;
-  left: -100px;
-  z-index: 0;
-}
-
-.accueil-page > * {
-  position: relative;
-  z-index: 1;
+@keyframes gradientBackground {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 
