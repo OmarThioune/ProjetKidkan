@@ -66,7 +66,7 @@ const Accueil = () => {
           <h3>Ce que disent les parents</h3>
           <blockquote>
             “Grâce à KidKan, mes enfants découvrent de nouvelles passions chaque semaine !”<br/>
-            <span>– Omar</span>
+            <span></span>
           </blockquote>
         </section>
 
